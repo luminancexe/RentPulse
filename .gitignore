@@ -1,0 +1,94 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# React Native & Expo
+.expo/
+.expo-shared/
+web-build/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# Python & FastAPI
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment Variables & Secrets
+.env
+.env*.local
+!.env.example
+*.pem
+
+# Database & SQLite
+*.sqlite
+*.sqlite3
+*.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+
+# Testing & Coverage
+coverage/
+.nyc_output/
+cypress/videos/
+cypress/screenshots/
+playwright-report/
+test-results/
+
+# Temporary & Cache
+.cache/
+.turbo/
+.parcel-cache/
+tmp/
+scratch/
