@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --canvas: #FAF8F5;
+  --surface: #FFFFFF;
+  --muted-sand: #F3EFEA;
+  --ink-primary: #1C1A17;
+  --ink-secondary: #736B64;
+  --ink-tertiary: #A39B92;
+  --forest: #2C4A3E;
+  --forest-hover: #233B31;
+  --terracotta: #BD5338;
+  --hairline: rgba(28, 26, 23, 0.08);
+}
+
+@layer base {
+  body {
+    background-color: var(--canvas);
+    color: var(--ink-primary);
+    font-family: var(--font-plus-jakarta), sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: #2C4A3E;
+    color: #FAF8F5;
+  }
+
+  h1, h2, h3, h4, .font-editorial {
+    font-family: var(--font-fraunces), serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  /* Tabular Numerals for Prices & Financial Breakdown */
+  .tabular-nums {
+    font-feature-settings: 'tnum' 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Micro-Badges: 10-11px Uppercase with Wide Tracking */
+  .micro-badge {
+    font-size: 0.6875rem; /* 11px */
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  /* Delicate 1px Hairline Border */
+  .border-hairline {
+    border: 1px solid rgba(28, 26, 23, 0.08);
+  }
+
+  .border-hairline-b {
+    border-bottom: 1px solid rgba(28, 26, 23, 0.08);
+  }
+
+  .border-hairline-t {
+    border-top: 1px solid rgba(28, 26, 23, 0.08);
+  }
+
+  /* Frosted Glassmorphic Badge */
+  .glass-badge {
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+
+  /* Ambient Hover Physics */
+  .hover-glow {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hover-glow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(28, 26, 23, 0.06);
+  }
+}
