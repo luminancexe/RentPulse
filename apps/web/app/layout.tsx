@@ -17,7 +17,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "RentPulse — Curated Urban Living & Verified Tenancy",
+  title: "RentPulse",
   description:
     "An intelligent multi-persona house rental discovery, cohabitation compatibility, and tenancy lifecycle management system.",
   icons: {
