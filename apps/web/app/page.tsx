@@ -608,9 +608,9 @@ export default function HomePage() {
       {/* =========================================================================
           FULL-WIDTH FOOTER
          ========================================================================= */}
-      <footer className="border-t border-hairline bg-surface pt-14 pb-12 text-ink-secondary">
+      <footer className="bg-surface pt-14 pb-12 text-ink-secondary">
         <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16">
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-10 pb-12 border-b border-hairline text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-10 pb-12 text-xs">
             <div className="md:col-span-2">
               <span className="font-editorial text-2xl font-bold text-ink-primary block mb-3">
                 RentPulse
