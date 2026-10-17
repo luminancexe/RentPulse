@@ -216,13 +216,13 @@ export default function HomePage() {
       {/* =========================================================================
           HERO BANNER SECTION (Full-Width Cinematic Photography at Dusk)
          ========================================================================= */}
-      <section className="relative w-full min-h-[720px] lg:min-h-[800px] bg-canvas overflow-hidden flex flex-col justify-between">
-        {/* Full-width High-Res Background Image with Dual Mask Dissolve */}
+      <section className="relative w-full h-[760px] lg:h-[840px] bg-canvas overflow-hidden">
+        {/* Full-width High-Res Background Image with Natural Low-Mist Dissolve */}
         <div 
           className="absolute inset-0 z-0 pointer-events-none"
           style={{
-            maskImage: "linear-gradient(to bottom, black 0%, black 35%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.45) 65%, rgba(0,0,0,0.1) 75%, transparent 85%)",
-            WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 35%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.45) 65%, rgba(0,0,0,0.1) 75%, transparent 85%)",
+            maskImage: "linear-gradient(to bottom, black 0%, black 65%, rgba(0,0,0,0.85) 78%, rgba(0,0,0,0.4) 88%, rgba(0,0,0,0.08) 96%, transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 65%, rgba(0,0,0,0.85) 78%, rgba(0,0,0,0.4) 88%, rgba(0,0,0,0.08) 96%, transparent 100%)",
           }}
         >
           <Image
@@ -237,11 +237,11 @@ export default function HomePage() {
           <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/70 to-transparent" />
         </div>
 
-        {/* Ethereal misty gradient overlay dissolving cleanly into canvas */}
+        {/* Ethereal misty gradient overlay concentrated at bottom transition */}
         <div 
-          className="absolute inset-x-0 bottom-0 h-[480px] pointer-events-none z-10"
+          className="absolute inset-x-0 bottom-0 h-72 sm:h-88 pointer-events-none z-10"
           style={{
-            background: "linear-gradient(to bottom, transparent 0%, rgba(250, 248, 245, 0.25) 30%, rgba(250, 248, 245, 0.65) 52%, rgba(250, 248, 245, 0.92) 72%, #FAF8F5 85%, #FAF8F5 100%)"
+            background: "linear-gradient(to bottom, transparent 0%, rgba(250, 248, 245, 0.12) 28%, rgba(250, 248, 245, 0.45) 55%, rgba(250, 248, 245, 0.82) 80%, rgba(250, 248, 245, 0.98) 95%, #FAF8F5 100%)"
           }}
         />
 
@@ -291,7 +291,7 @@ export default function HomePage() {
         </header>
 
         {/* 2. HERO HEADLINE & TEXT */}
-        <div className="relative z-10 w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 flex-1 flex flex-col justify-center py-16 sm:py-20">
+        <div className="relative z-10 w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 h-full flex flex-col justify-center pb-32 sm:pb-40">
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-xs font-medium tracking-wide mb-4">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
@@ -307,7 +307,7 @@ export default function HomePage() {
         </div>
 
         {/* 3. FLOATING GLASS SEARCH BAR (Wide & Immersive) */}
-        <div className="relative z-30 w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 pb-12 sm:pb-16">
+        <div className="absolute inset-x-0 bottom-8 sm:bottom-12 z-30 px-6 sm:px-10 lg:px-16">
           <div className="w-full max-w-[1400px] mx-auto bg-neutral-900/55 backdrop-blur-2xl border border-white/20 shadow-2xl rounded-2xl p-3 sm:p-3.5">
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
               
