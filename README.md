@@ -126,97 +126,15 @@ The completed RentPulse ecosystem is planned to provide:
 
 ---
 
-## 🎨 Editorial Design System & Visual Philosophy
+## 📐 Architecture, Design System & Roadmap
 
-RentPulse departs from generic, sterile SaaS templates in favor of a **tactile, warm editorial boutique hotel design language**:
+For in-depth technical documentation, design tokens, platform diagrams, and delivery schedules, see the dedicated [ARCHITECTURE.md](ARCHITECTURE.md) specification:
 
-```
-Canvas Base         Card Surface        Muted Sand          Deep Espresso       Warm Taupe          Deep Forest (Accent)
-#FAF8F5             #FFFFFF             #F3EFEA             #1C1A17             #736B64             #2C4A3E
-[Warm Linen]        [Crisp Paper]       [Muted Container]   [Primary Ink]       [Secondary Meta]    [Boutique Evergreen]
-```
-
-- **Material Palette:** Warm Alabaster (`#FAF8F5`) linen canvas paired with crisp card surfaces (`#FFFFFF`) and delicate 1px hairline outlines (`rgba(28, 26, 23, 0.08)`). Zero muddy drop shadows.
-- **Typographic Hierarchy:**
-  - **Headings & Display:** *Fraunces* (Editorial Serif) or *Cabinet Grotesk* for high-character warmth.
-  - **Body & Subtitles:** *Plus Jakarta Sans* or *Satoshi* for clean, modern readability.
-  - **Prices & Numerals:** Tabular Figures (`font-feature-settings: 'tnum'`) with lightweight `/ month` suffixes.
-  - **Micro-Badges:** 10–11px uppercase with wide letter-spacing (`tracking-widest`).
-- **Cinematic Framing:** `16:10` widescreen photography containers with subtle horizontal edge-peeking (`16–24px`) to afford natural swipe gestures on mobile.
-- **Frosted Overlays:** Glassmorphic status chips (`backdrop-blur-md bg-white/80`) with translucent hairline borders.
-
----
-
-## 🏗️ Platform Architecture
-
-RentPulse is organized into decoupled layers ensuring high horizontal scalability, strict data privacy, and sub-second geospatial query performance:
-
-```text
-                    ┌────────────────────────────────────────────────────────┐
-                    │               Client Presentation Layer                │
-                    │   Next.js 15 Web Portal  │  React Native Expo Mobile   │
-                    └───────────────────────────┬────────────────────────────┘
-                                                │
-                                                ▼
-                    ┌────────────────────────────────────────────────────────┐
-                    │              API Gateway & Server Actions              │
-                    │        Node.js / Express / Next.js API Routes          │
-                    └───────────┬───────────────────────────────┬────────────┘
-                                │                               │
-               ┌────────────────┴───────────────┐               │
-               ▼                                ▼               ▼
-     Authentication & Dossier            Listing Pipeline  Cost Engine
-     (JWT, AES-256 Vault)               (PostGIS Spatial)  (Itemized Breakdown)
-               │                                │               │
-               ├────────────────────────────────┴───────────────┤
-               ▼                                                ▼
-┌───────────────────────────────┐              ┌─────────────────────────────────┐
-│  Python Matching Microservice │              │   PostgreSQL 16.2 + PostGIS 3.4 │
-│  (FastAPI, NumPy Vector Math) │              │   (27 Normalized Tables / GiST) │
-└───────────────────────────────┘              └────────────────┬────────────────┘
-                                                                │
-                               ┌────────────────────────────────┴────────────────┐
-                               ▼                                                 ▼
-                ┌───────────────────────────────┐              ┌─────────────────────────────────┐
-                │    External Gateways & SMS    │              │    Statutory & MFS Gateways     │
-                │  (Barikoi Maps, SSL Wireless) │              │   (DMP CIMS Export, bKash/Nagad)│
-                └───────────────────────────────┘              └─────────────────────────────────┘
-```
-
----
-
-## 🛠️ Planned Technology Stack
-
-| Area | Technology | Purpose & Specifications |
-|---|---|---|
-| **Web Client** | Next.js 15 (React 19, App Router) | High-performance editorial web platform, SSR & Server Actions |
-| **Mobile Client** | React Native Expo (iOS & Android) | Cross-platform mobile app, native camera inspection & push alerts |
-| **Styling & Icons** | Tailwind CSS + Lucide React | Boutique editorial tokens (`#FAF8F5`, `#1C1A17`), thin-stroke icons |
-| **Typography** | `next/font` (Fraunces + Plus Jakarta Sans) | Variable serif display headings paired with geometric sans-serif |
-| **API & Business Logic** | Node.js, Express, TypeScript | REST API endpoints, JWT authentication, and booking workflows |
-| **Matching Microservice** | Python 3.11, FastAPI, NumPy | 5-vector Euclidean distance and cosine similarity calculations |
-| **Primary Database** | PostgreSQL 16.2 | 27 normalized relational tables across 8 functional subsystems |
-| **Spatial Engine** | PostGIS 3.4 | GiST indexing on `geometry(Point, 4326)` for radius filtering |
-| **ORM & Data Layer** | Prisma / Drizzle ORM | Type-safe database queries and automated schema migrations |
-| **Encryption & Security** | Web Crypto API (AES-256, SHA-256) | Client-side dossier encryption & cryptographic deed hashing |
-| **Geospatial & Maps** | Barikoi BD API + Mapbox GL JS | Dhaka street-level geocoding, reverse geocoding & custom tiles |
-| **Telecom Integration** | SSL Wireless / Greenweb SMS Gateway | Domestic masking SMS for OTP verification and booking confirmations |
-| **Testing Frameworks** | Jest, Playwright, PyTest | Unit, end-to-end user journey, and vector algorithm test suites |
-
----
-
-## 📋 Project Roadmap
-
-RentPulse is structured as a 16-week agile engineering delivery across 6 sequential phases:
-
-| Phase | Milestone Focus | Status |
-|---|---|:---:|
-| **Phase 1** | **Scaffolding, Editorial Tokens & Core Workspace**<br/>Next.js 15 App Router setup, boutique hotel design tokens, and typography loaders. | [✅ Complete](reports/PHASE_1_COMPLETION_REPORT.md) |
-| **Phase 2** | **Database Architecture & PostGIS Spatial Layer**<br/>27 relational tables (Prisma/Drizzle), GiST spatial indexes, and Dhaka seed dataset. | 🔜 Next |
-| **Phase 3** | **Boutique UI Kit & Dual-Mode Discovery Experience**<br/>Atomic components, 16:10 widescreen cards, muted map feed, and cost calculator. | ⏳ Planned |
-| **Phase 4** | **Roommate Synergy Engine & Tenancy Dossier**<br/>5-vector habit quiz, Python vector matching microservice, and encrypted dossier vault. | ⏳ Planned |
-| **Phase 5** | **Tenancy Lifecycle, Viewing Booking & DMP CIMS Gateway**<br/>Inspection slot scheduler, bilingual digital lease generator, and police compliance export. | ⏳ Planned |
-| **Phase 6** | **Mobile Client Parity, Quality Assurance & Cloud Staging**<br/>React Native Expo mobile app, Jest/Playwright testing (>85% coverage), and cloud release. | ⏳ Planned |
+- 🎨 **[Editorial Design System & Visual Philosophy](ARCHITECTURE.md#-editorial-design-system--visual-philosophy)** — Warm alabaster palette tokens (`#FAF8F5`, `#1C1A17`), typography pairing (*Fraunces* + *Plus Jakarta Sans*), and widescreen layout physics.
+- 🏗️ **[Platform Architecture & Subsystems](ARCHITECTURE.md#️-platform-architecture)** — Decoupled client presentation, Node.js API actions, PostgreSQL 16 / PostGIS 3.4 spatial layer, and Python vector matching microservice.
+- 🛠️ **[Planned Technology Stack](ARCHITECTURE.md#️-planned-technology-stack)** — Detailed component breakdown (Next.js 15, React Native Expo, PostGIS, Barikoi Maps, Web Crypto AES-256).
+- 📋 **[16-Week Project Roadmap & Milestones](ARCHITECTURE.md#-project-roadmap)** — Agile delivery across Phases 1 through 6.
+- 📑 **[Phase 1 Completion Report](reports/PHASE_1_COMPLETION_REPORT.md)** — Deliverables sign-off and verification artifacts.
 
 ---
 
@@ -239,7 +157,8 @@ RentPulse/
 ├── reports/                         # Phase completion reports & audit artifacts
 │   └── PHASE_1_COMPLETION_REPORT.md # Phase 1 verification and deliverables sign-off
 ├── .gitignore                       # Multi-stack ignore rules (Node, Next, Expo, Python)
-└── README.md                        # Master technical documentation
+├── ARCHITECTURE.md                  # Design system, platform architecture, tech stack & roadmap
+└── README.md                        # Master overview, mission, domain lifecycle & capabilities
 ```
 
 ---
