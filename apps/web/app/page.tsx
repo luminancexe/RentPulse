@@ -229,7 +229,13 @@ export default function HomePage() {
           {/* Subtle cinematic gradient vignette for text readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/25" />
           <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/70 to-transparent" />
-          <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
+          {/* Ethereal misty gradient dissolve into canvas background */}
+          <div 
+            className="absolute inset-x-0 bottom-0 h-72 sm:h-[420px] pointer-events-none z-10"
+            style={{
+              background: "linear-gradient(to bottom, transparent 0%, rgba(250, 248, 245, 0.08) 25%, rgba(250, 248, 245, 0.38) 50%, rgba(250, 248, 245, 0.75) 72%, rgba(250, 248, 245, 0.95) 90%, #FAF8F5 100%)"
+            }}
+          />
         </div>
 
         {/* 1. TOP NAVIGATION OVERLAY (Edge-to-Edge with Generous Width) */}
@@ -294,8 +300,8 @@ export default function HomePage() {
         </div>
 
         {/* 3. FLOATING GLASS SEARCH BAR (Wide & Immersive) */}
-        <div className="absolute inset-x-0 bottom-8 z-30 px-6 sm:px-10 lg:px-16">
-          <div className="w-full max-w-[1400px] mx-auto bg-white/25 backdrop-blur-2xl border border-white/40 shadow-2xl rounded-2xl p-3 sm:p-3.5">
+        <div className="absolute inset-x-0 bottom-8 sm:bottom-10 z-30 px-6 sm:px-10 lg:px-16">
+          <div className="w-full max-w-[1400px] mx-auto bg-neutral-900/55 backdrop-blur-2xl border border-white/20 shadow-2xl rounded-2xl p-3 sm:p-3.5">
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
               
               {/* Where to Input */}
