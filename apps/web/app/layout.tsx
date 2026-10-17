@@ -20,6 +20,10 @@ export const metadata: Metadata = {
   title: "RentPulse — Curated Urban Living & Verified Tenancy",
   description:
     "An intelligent multi-persona house rental discovery, cohabitation compatibility, and tenancy lifecycle management system.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({

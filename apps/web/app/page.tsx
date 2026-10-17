@@ -251,7 +251,7 @@ export default function HomePage() {
           <Link href="/" className="flex items-center gap-2.5 group shrink-0">
             <div className="relative w-8 h-8 rounded-lg overflow-hidden shrink-0 flex items-center justify-center">
               <Image 
-                src="/brand_logo.png" 
+                src="/logo.png" 
                 alt="RentPulse Logo" 
                 width={32} 
                 height={32} 
@@ -627,7 +627,7 @@ export default function HomePage() {
               <Link href="/" className="flex items-center gap-2.5 group mb-3 shrink-0">
                 <div className="relative w-7 h-7 rounded-lg overflow-hidden shrink-0 flex items-center justify-center">
                   <Image 
-                    src="/brand_logo.png" 
+                    src="/logo.png" 
                     alt="RentPulse Logo" 
                     width={28} 
                     height={28} 
