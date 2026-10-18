@@ -99,8 +99,8 @@ RentPulse is structured as a 16-week agile engineering delivery across 6 sequent
 | Phase | Milestone Focus | Status | Deliverables & Verification |
 |---|---|:---:|---|
 | **Phase 1** | **Scaffolding, Editorial Tokens & Core Workspace** | [✅ Complete](reports/PHASE_1_COMPLETION_REPORT.md) | Next.js 15 App Router setup, boutique hotel design tokens, Fraunces/Jakarta typography loaders, landing page experience, and zero-error production build. |
-| **Phase 2** | **Database Architecture & PostGIS Spatial Layer** | 🔜 Next | 27 relational tables (Prisma/Drizzle), GiST spatial indexes, Dhaka neighborhood centroids, and database migration test suite. |
-| **Phase 3** | **Boutique UI Kit & Dual-Mode Discovery Experience** | ⏳ Planned | Atomic components, 16:10 widescreen cards, interactive map feed, dual-mode filter switch, and transparent cost breakdown calculator. |
+| **Phase 2** | **Database Architecture & PostGIS Spatial Layer** | [✅ Complete](reports/PHASE_2_COMPLETION_REPORT.md) | 27 relational tables (Prisma), PostGIS 3.4 spatial extensions, GiST spatial indexes, Dhaka neighborhood centroids, and database migration test suite. |
+| **Phase 3** | **Boutique UI Kit & Dual-Mode Discovery Experience** | 🔜 Next | Atomic components, 16:10 widescreen cards, interactive map feed, dual-mode filter switch, and transparent cost breakdown calculator. |
 | **Phase 4** | **Roommate Synergy Engine & Tenancy Dossier** | ⏳ Planned | 5-vector habit quiz, Python vector matching microservice, radar chart visualizations, and client-side encrypted dossier vault. |
 | **Phase 5** | **Tenancy Lifecycle, Viewing Booking & DMP CIMS Gateway** | ⏳ Planned | Inspection slot scheduler, bilingual digital lease generator, MFS payment redirection, and police compliance export. |
 | **Phase 6** | **Mobile Client Parity, Quality Assurance & Cloud Staging** | ⏳ Planned | React Native Expo mobile app, Jest/Playwright testing (>85% coverage), automated CI/CD pipeline, and cloud release. |
