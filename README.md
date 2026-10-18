@@ -134,9 +134,7 @@ For in-depth technical documentation, design tokens, platform diagrams, and deli
 - 🏗️ **[Platform Architecture & Subsystems](ARCHITECTURE.md#️-platform-architecture)** — Decoupled client presentation, Node.js API actions, PostgreSQL 16 / PostGIS 3.4 spatial layer, and Python vector matching microservice.
 - 🛠️ **[Planned Technology Stack](ARCHITECTURE.md#️-planned-technology-stack)** — Detailed component breakdown (Next.js 15, React Native Expo, PostGIS, Barikoi Maps, Web Crypto AES-256).
 - 📋 **[16-Week Project Roadmap & Milestones](ARCHITECTURE.md#-project-roadmap)** — Agile delivery across Phases 1 through 6.
-- 📑 **[Phase 1 Completion Report](reports/PHASE_1_COMPLETION_REPORT.md)** — Deliverables sign-off and verification artifacts.
-- 📑 **[Phase 2 Completion Report](reports/PHASE_2_COMPLETION_REPORT.md)** — 27-table relational schema, PostGIS spatial layer, Dhaka centroids, and seed dataset.
-- 📂 **[Reports Directory Index](reports/README.md)** — Full milestone index, audit standards, and quality criteria.
+- 📑 **[Milestone Completion Reports](reports/)** — Comprehensive phase delivery sign-offs, verification logs, and audit criteria across all roadmap phases.
 
 ---
 
