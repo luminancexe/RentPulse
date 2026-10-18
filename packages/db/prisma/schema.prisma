@@ -1,0 +1,793 @@
+// ============================================================================
+// RentPulse Enterprise Relational Schema (27 Tables)
+// Database Engine: PostgreSQL 16.2 + PostGIS 3.4
+// Standard: IEEE 1016-2009 / Crow's Foot Relational Standard
+// Architecture: 8 Functional Subsystems
+// ============================================================================
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
+}
+
+// ============================================================================
+// ENUMS CATALOG
+// ============================================================================
+
+enum UserRole {
+  renter
+  landlord
+  admin
+
+  @@map("user_role_enum")
+}
+
+enum PersonaType {
+  student
+  young_professional
+  family
+
+  @@map("persona_type_enum")
+}
+
+enum ListingType {
+  entire_flat
+  single_room
+  shared_seat
+  sublet
+
+  @@map("listing_type_enum")
+}
+
+enum FurnishingStatus {
+  unfurnished
+  semi_furnished
+  fully_furnished
+
+  @@map("furnishing_status_enum")
+}
+
+enum GasSupplyType {
+  government_pipeline
+  lpg_cylinder
+  none
+
+  @@map("gas_supply_type_enum")
+}
+
+enum ElectricityBilling {
+  prepaid_card
+  postpaid_submeter
+  fixed_utility_share
+
+  @@map("electricity_billing_enum")
+}
+
+enum ViewingMode {
+  in_person
+  virtual_call
+
+  @@map("viewing_mode_enum")
+}
+
+enum ViewingStatus {
+  requested
+  confirmed
+  rescheduled
+  completed
+  cancelled
+  no_show
+
+  @@map("viewing_status_enum")
+}
+
+enum DossierStatus {
+  draft
+  ready_locked
+  submitted
+  approved
+  rejected
+
+  @@map("dossier_status_enum")
+}
+
+enum DeedAuditStatus {
+  pending_audit
+  verified
+  rejected
+  fraud_flagged
+
+  @@map("deed_audit_status_enum")
+}
+
+enum AgreementStatus {
+  draft
+  pending_renter_signature
+  pending_landlord_signature
+  executed
+  active
+  expired
+  terminated
+
+  @@map("agreement_status_enum")
+}
+
+enum PaymentType {
+  advance_booking_deposit
+  security_deposit
+  monthly_rent
+  itemized_utility_bill
+
+  @@map("payment_type_enum")
+}
+
+enum PaymentChannel {
+  bkash
+  nagad
+  bank_transfer
+  card
+
+  @@map("payment_channel_enum")
+}
+
+enum PaymentStatus {
+  initiated
+  processing
+  escrowed
+  released_to_landlord
+  refunded_to_renter
+  failed
+
+  @@map("payment_status_enum")
+}
+
+enum LedgerStatus {
+  unpaid
+  partially_paid
+  paid
+  overdue
+
+  @@map("ledger_status_enum")
+}
+
+enum CimsExportStatus {
+  draft
+  encrypted_ready
+  dispatched_to_police
+  acknowledged_by_thana
+
+  @@map("cims_export_status_enum")
+}
+
+enum DisputeStatus {
+  open
+  under_mediation
+  resolved_mutual
+  escalated_legal
+  dismissed
+
+  @@map("dispute_status_enum")
+}
+
+enum MatchStatus {
+  calculated
+  contacted
+  cohabitating_accepted
+  dismissed
+
+  @@map("match_status_enum")
+}
+
+enum DietaryPreference {
+  halal
+  vegetarian
+  non_vegetarian_flexible
+  strict_vegan
+
+  @@map("dietary_preference_enum")
+}
+
+// ============================================================================
+// SUB-01: IDENTITY VAULT & PERSONAS (5 Tables)
+// ============================================================================
+
+model User {
+  id               String   @id @default(uuid()) @db.VarChar(36)
+  phoneNumber      String   @unique @map("phone_number") @db.VarChar(20)
+  email            String?  @unique @db.VarChar(255)
+  fullName         String   @map("full_name") @db.VarChar(150)
+  passwordHash     String   @map("password_hash") @db.VarChar(255)
+  role             UserRole @default(renter)
+  isPhoneVerified  Boolean  @default(false) @map("is_phone_verified")
+  isNidVerified    Boolean  @default(false) @map("is_nid_verified")
+  avatarUrl        String?  @map("avatar_url") @db.VarChar(500)
+  status           String   @default("active") @db.VarChar(30)
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Relationships
+  renterProfile               RenterProfile?
+  landlordProfile             LandlordProfile?
+  notificationPreferences     NotificationPreference?
+  properties                  Property[]
+  listings                    Listing[]
+  shortlists                  Shortlist[]
+  vacancyAlerts               VacancyAlert[]
+  roommateQuestionnaire       RoommateQuestionnaire?
+  sentMatches                 RoommateCompatibilityMatch[]  @relation("RenterAMatches")
+  receivedMatches             RoommateCompatibilityMatch[]  @relation("RenterBMatches")
+  sentConnections             RoommateConnection[]          @relation("SentConnections")
+  receivedConnections         RoommateConnection[]          @relation("ReceivedConnections")
+  tenancyDossier              TenancyDossier?
+  dossierSubmissions          DossierSubmission[]
+  viewingSlots                ViewingSlot[]
+  viewingAppointmentsAsRenter ViewingAppointment[]          @relation("RenterAppointments")
+  viewingAppointmentsAsHost   ViewingAppointment[]          @relation("LandlordAppointments")
+  deedVerifications           DeedVerification[]
+  auditedDeeds                DeedVerification[]            @relation("AdminAuditedDeeds")
+  flaggedCredentials          FlaggedCredential[]           @relation("ReportedFlags")
+  investigatedFlags           FlaggedCredential[]           @relation("InvestigatedFlags")
+  renterAgreements            TenancyAgreement[]            @relation("RenterAgreements")
+  landlordAgreements          TenancyAgreement[]            @relation("LandlordAgreements")
+  payerTransactions           PaymentTransaction[]          @relation("PayerTransactions")
+  payeeTransactions           PaymentTransaction[]          @relation("PayeeTransactions")
+  cimsExports                 DmpCimsExport[]               @relation("RenterCimsExports")
+  auditedCimsExports          DmpCimsExport[]               @relation("AdminCimsExports")
+  raisedDisputes              Dispute[]                     @relation("RaisedDisputes")
+  respondentDisputes          Dispute[]                     @relation("RespondentDisputes")
+  arbitratedDisputes          Dispute[]                     @relation("ArbitratedDisputes")
+  auditLogs                   AuditLog[]
+
+  @@map("users")
+}
+
+model RenterProfile {
+  id                     String      @id @default(uuid()) @db.VarChar(36)
+  userId                 String      @unique @map("user_id") @db.VarChar(36)
+  user                   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  personaType            PersonaType @map("persona_type")
+  institutionOrCompany   String?     @map("institution_or_company") @db.VarChar(200)
+  occupationTitle        String?     @map("occupation_title") @db.VarChar(150)
+  monthlyIncome          Decimal?    @map("monthly_income") @db.Decimal(12, 2)
+  maritalStatus          String?     @map("marital_status") @db.VarChar(50)
+  emergencyContactName   String?     @map("emergency_contact_name") @db.VarChar(150)
+  emergencyContactPhone  String?     @map("emergency_contact_phone") @db.VarChar(20)
+  bio                    String?     @db.Text
+  createdAt              DateTime    @default(now()) @map("created_at")
+  updatedAt              DateTime    @default(now()) @updatedAt @map("updated_at")
+
+  @@map("renter_profiles")
+}
+
+model LandlordProfile {
+  id                         String    @id @default(uuid()) @db.VarChar(36)
+  userId                     String    @unique @map("user_id") @db.VarChar(36)
+  user                       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  nidNumber                  String    @unique @map("nid_number") @db.VarChar(30)
+  tradeLicenseNo             String?   @map("trade_license_no") @db.VarChar(100)
+  taxIdentificationNumber    String?   @map("tax_identification_number") @db.VarChar(50)
+  totalRegisteredProperties  Int       @default(0) @map("total_registered_properties")
+  isTrustBadgeAwarded        Boolean   @default(false) @map("is_trust_badge_awarded")
+  trustScore                 Decimal   @default(0.00) @map("trust_score") @db.Decimal(4, 2)
+  verifiedAt                 DateTime? @map("verified_at")
+  createdAt                  DateTime  @default(now()) @map("created_at")
+
+  @@map("landlord_profiles")
+}
+
+model OtpVerification {
+  id           String   @id @default(uuid()) @db.VarChar(36)
+  phoneNumber  String   @map("phone_number") @db.VarChar(20)
+  otpCode      String   @map("otp_code") @db.VarChar(6)
+  purpose      String   @db.VarChar(50)
+  attemptCount Int      @default(0) @map("attempt_count")
+  isConsumed   Boolean  @default(false) @map("is_consumed")
+  expiresAt    DateTime @map("expires_at")
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("otp_verifications")
+}
+
+model NotificationPreference {
+  id                         String   @id @default(uuid()) @db.VarChar(36)
+  userId                     String   @unique @map("user_id") @db.VarChar(36)
+  user                       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  smsEnabled                 Boolean  @default(true) @map("sms_enabled")
+  emailEnabled               Boolean  @default(true) @map("email_enabled")
+  pushEnabled                Boolean  @default(true) @map("push_enabled")
+  vacancyAlertsEnabled       Boolean  @default(true) @map("vacancy_alerts_enabled")
+  chatNotificationsEnabled   Boolean  @default(true) @map("chat_notifications_enabled")
+  updatedAt                  DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@map("notification_preferences")
+}
+
+// ============================================================================
+// SUB-02: GEOSPATIAL SEARCH & COST TRANSPARENCY (5 Tables)
+// ============================================================================
+
+model Property {
+  id            String   @id @default(uuid()) @db.VarChar(36)
+  landlordId    String   @map("landlord_id") @db.VarChar(36)
+  landlord      User     @relation(fields: [landlordId], references: [id], onDelete: Restrict)
+  title         String   @db.VarChar(255)
+  description   String   @db.Text
+  buildingName  String?  @map("building_name") @db.VarChar(150)
+  holdingNumber String?  @map("holding_number") @db.VarChar(50)
+  roadNumber    String?  @map("road_number") @db.VarChar(50)
+  blockSector   String?  @map("block_sector") @db.VarChar(50)
+  thana         String   @db.VarChar(100)
+  district      String   @default("Dhaka") @db.VarChar(100)
+  postalCode    String?  @map("postal_code") @db.VarChar(20)
+  latitude      Decimal  @db.Decimal(10, 8)
+  longitude     Decimal  @db.Decimal(11, 8)
+  geom          String?  @db.VarChar(100)
+  totalFloors   Int      @default(1) @map("total_floors")
+  buildingType  String?  @default("Residential Apartment") @map("building_type") @db.VarChar(50)
+  yearBuilt     Int?     @map("year_built")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at")
+
+  // Relationships
+  amenities          PropertyAmenity?
+  listings           Listing[]
+  deedVerifications  DeedVerification[]
+  flaggedCredentials FlaggedCredential[]
+
+  @@index([thana, isActive])
+  @@map("properties")
+}
+
+model PropertyAmenity {
+  id                         String        @id @default(uuid()) @db.VarChar(36)
+  propertyId                 String        @unique @map("property_id") @db.VarChar(36)
+  property                   Property      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  hasLift                    Boolean       @default(false) @map("has_lift")
+  hasStandbyGenerator        Boolean       @default(false) @map("has_standby_generator")
+  hasCctvSurveillance        Boolean       @default(false) @map("has_cctv_surveillance")
+  hasDedicatedSecurityGuard  Boolean       @default(false) @map("has_dedicated_security_guard")
+  hasCarParking              Boolean       @default(false) @map("has_car_parking")
+  hasMotorcycleParking       Boolean       @default(false) @map("has_motorcycle_parking")
+  gasSupply                  GasSupplyType @default(government_pipeline) @map("gas_supply")
+  hasWasaWaterSupply         Boolean       @default(true) @map("has_wasa_water_supply")
+  hasRooftopAccess           Boolean       @default(false) @map("has_rooftop_access")
+  hasIntercom                Boolean       @default(false) @map("has_intercom")
+
+  @@map("property_amenities")
+}
+
+model PropertyCostBreakdown {
+  id                         String             @id @default(uuid()) @db.VarChar(36)
+  listingId                  String             @unique @map("listing_id") @db.VarChar(36)
+  listing                    Listing            @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  baseRent                   Decimal            @map("base_rent") @db.Decimal(12, 2)
+  serviceCharge              Decimal            @default(0.00) @map("service_charge") @db.Decimal(10, 2)
+  electricityBilling         ElectricityBilling @default(prepaid_card) @map("electricity_billing")
+  gasFee                     Decimal            @default(0.00) @map("gas_fee") @db.Decimal(10, 2)
+  wasaWaterFee               Decimal            @default(0.00) @map("wasa_water_fee") @db.Decimal(10, 2)
+  wasteCollectionFee         Decimal            @default(0.00) @map("waste_collection_fee") @db.Decimal(10, 2)
+  broadbandInternetFee       Decimal            @default(0.00) @map("broadband_internet_fee") @db.Decimal(10, 2)
+  securityDepositMonths      Int                @default(2) @map("security_deposit_months")
+  advanceRentMonths          Int                @default(1) @map("advance_rent_months")
+  estimatedGrossMonthlyCost  Decimal            @map("estimated_gross_monthly_cost") @db.Decimal(12, 2)
+
+  @@index([estimatedGrossMonthlyCost])
+  @@map("property_cost_breakdowns")
+}
+
+model Shortlist {
+  id          String   @id @default(uuid()) @db.VarChar(36)
+  renterId    String   @map("renter_id") @db.VarChar(36)
+  renter      User     @relation(fields: [renterId], references: [id], onDelete: Cascade)
+  listingId   String   @map("listing_id") @db.VarChar(36)
+  listing     Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  customNotes String?  @map("custom_notes") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@unique([renterId, listingId])
+  @@map("shortlists")
+}
+
+model VacancyAlert {
+  id             String      @id @default(uuid()) @db.VarChar(36)
+  renterId       String      @map("renter_id") @db.VarChar(36)
+  renter         User        @relation(fields: [renterId], references: [id], onDelete: Cascade)
+  targetThana    String      @map("target_thana") @db.VarChar(100)
+  maxBudget      Decimal     @map("max_budget") @db.Decimal(12, 2)
+  desiredPersona PersonaType @map("desired_persona")
+  desiredBedRooms Int?       @map("desired_bed_rooms")
+  isActive       Boolean     @default(true) @map("is_active")
+  lastNotifiedAt DateTime?   @map("last_notified_at")
+  createdAt      DateTime    @default(now()) @map("created_at")
+
+  @@map("vacancy_alerts")
+}
+
+// ============================================================================
+// SUB-03: ROOMMATE COMPATIBILITY ENGINE (3 Tables)
+// ============================================================================
+
+model RoommateQuestionnaire {
+  id                     String            @id @default(uuid()) @db.VarChar(36)
+  renterId               String            @unique @map("renter_id") @db.VarChar(36)
+  renter                 User              @relation(fields: [renterId], references: [id], onDelete: Cascade)
+  sleepScheduleScore     Int               @map("sleep_schedule_score")
+  cleanlinessHabitsScore Int               @map("cleanliness_habits_score")
+  socialGuestTolerance   Int               @map("social_guest_tolerance")
+  noiseTolerance         Int               @map("noise_tolerance")
+  dietaryLifestyle       DietaryPreference @default(halal) @map("dietary_lifestyle")
+  smokingToleranceScore  Int               @map("smoking_tolerance_score")
+  sharingMindsetScore    Int               @default(3) @map("sharing_mindset_score")
+  studyFocusPriority     Int               @default(3) @map("study_focus_priority")
+  compatibilityVector    Json              @map("compatibility_vector")
+  createdAt              DateTime          @default(now()) @map("created_at")
+  updatedAt              DateTime          @default(now()) @updatedAt @map("updated_at")
+
+  @@map("roommate_questionnaires")
+}
+
+model RoommateCompatibilityMatch {
+  id                          String      @id @default(uuid()) @db.VarChar(36)
+  renterAId                   String      @map("renter_a_id") @db.VarChar(36)
+  renterA                     User        @relation("RenterAMatches", fields: [renterAId], references: [id], onDelete: Cascade)
+  renterBId                   String      @map("renter_b_id") @db.VarChar(36)
+  renterB                     User        @relation("RenterBMatches", fields: [renterBId], references: [id], onDelete: Cascade)
+  aggregateCompatibilityScore Decimal     @map("aggregate_compatibility_score") @db.Decimal(5, 2)
+  sleepVectorDelta            Decimal     @map("sleep_vector_delta") @db.Decimal(4, 2)
+  cleanlinessVectorDelta      Decimal     @map("cleanliness_vector_delta") @db.Decimal(4, 2)
+  socialVectorDelta           Decimal     @map("social_vector_delta") @db.Decimal(4, 2)
+  noiseVectorDelta            Decimal     @map("noise_vector_delta") @db.Decimal(4, 2)
+  dietVectorDelta             Decimal     @map("diet_vector_delta") @db.Decimal(4, 2)
+  radarChartPayload           Json        @map("radar_chart_payload")
+  status                      MatchStatus @default(calculated)
+  computedAt                  DateTime    @default(now()) @map("computed_at")
+
+  @@unique([renterAId, renterBId])
+  @@map("roommate_compatibility_matches")
+}
+
+model RoommateConnection {
+  id                   String    @id @default(uuid()) @db.VarChar(36)
+  senderRenterId       String    @map("sender_renter_id") @db.VarChar(36)
+  senderRenter         User      @relation("SentConnections", fields: [senderRenterId], references: [id], onDelete: Cascade)
+  receiverRenterId     String    @map("receiver_renter_id") @db.VarChar(36)
+  receiverRenter       User      @relation("ReceivedConnections", fields: [receiverRenterId], references: [id], onDelete: Cascade)
+  introductoryMessage  String?   @map("introductory_message") @db.Text
+  isAccepted           Boolean   @default(false) @map("is_accepted")
+  respondedAt          DateTime? @map("responded_at")
+  createdAt            DateTime  @default(now()) @map("created_at")
+
+  @@map("roommate_connections")
+}
+
+// ============================================================================
+// SUB-04: TENANCY DOSSIER & INSPECTION PIPELINE (4 Tables)
+// ============================================================================
+
+model TenancyDossier {
+  id                             String        @id @default(uuid()) @db.VarChar(36)
+  renterId                       String        @unique @map("renter_id") @db.VarChar(36)
+  renter                         User          @relation(fields: [renterId], references: [id], onDelete: Cascade)
+  dossierHash                    String        @map("dossier_hash") @db.VarChar(64)
+  encryptedVaultKeyRef           String        @map("encrypted_vault_key_ref") @db.VarChar(255)
+  nidFrontImageUrl               String        @map("nid_front_image_url") @db.VarChar(500)
+  nidBackImageUrl                String        @map("nid_back_image_url") @db.VarChar(500)
+  studentOrJobIdCardUrl          String        @map("student_or_job_id_card_url") @db.VarChar(500)
+  proofOfIncomeUrl               String?       @map("proof_of_income_url") @db.VarChar(500)
+  previousLandlordReferencePhone String?       @map("previous_landlord_reference_phone") @db.VarChar(20)
+  policeCimsFormCompleted        Boolean       @default(false) @map("police_cims_form_completed")
+  status                         DossierStatus @default(draft)
+  isLocked                       Boolean       @default(false) @map("is_locked")
+  createdAt                      DateTime      @default(now()) @map("created_at")
+  updatedAt                      DateTime      @default(now()) @updatedAt @map("updated_at")
+
+  // Relationships
+  submissions DossierSubmission[]
+  cimsExports DmpCimsExport[]
+
+  @@map("tenancy_dossiers")
+}
+
+model DossierSubmission {
+  id                  String         @id @default(uuid()) @db.VarChar(36)
+  dossierId           String         @map("dossier_id") @db.VarChar(36)
+  dossier             TenancyDossier @relation(fields: [dossierId], references: [id], onDelete: Cascade)
+  listingId           String         @map("listing_id") @db.VarChar(36)
+  listing             Listing        @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  landlordId          String         @map("landlord_id") @db.VarChar(36)
+  landlord            User           @relation(fields: [landlordId], references: [id], onDelete: Restrict)
+  submissionStatus    String         @default("submitted") @map("submission_status") @db.VarChar(30)
+  landlordReviewNotes String?        @map("landlord_review_notes") @db.Text
+  reviewedAt          DateTime?      @map("reviewed_at")
+  submittedAt         DateTime       @default(now()) @map("submitted_at")
+
+  @@map("dossier_submissions")
+}
+
+model ViewingSlot {
+  id           String      @id @default(uuid()) @db.VarChar(36)
+  listingId    String      @map("listing_id") @db.VarChar(36)
+  listing      Listing     @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  landlordId   String      @map("landlord_id") @db.VarChar(36)
+  landlord     User        @relation(fields: [landlordId], references: [id], onDelete: Restrict)
+  slotStartTime DateTime   @map("slot_start_time")
+  slotEndTime   DateTime   @map("slot_end_time")
+  viewingMode  ViewingMode @default(in_person) @map("viewing_mode")
+  maxAttendees Int         @default(1) @map("max_attendees")
+  isBooked     Boolean     @default(false) @map("is_booked")
+
+  // Relationships
+  appointments ViewingAppointment[]
+
+  @@map("viewing_slots")
+}
+
+model ViewingAppointment {
+  id                        String        @id @default(uuid()) @db.VarChar(36)
+  slotId                    String        @map("slot_id") @db.VarChar(36)
+  slot                      ViewingSlot   @relation(fields: [slotId], references: [id], onDelete: Restrict)
+  listingId                 String        @map("listing_id") @db.VarChar(36)
+  listing                   Listing       @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  renterId                  String        @map("renter_id") @db.VarChar(36)
+  renter                    User          @relation("RenterAppointments", fields: [renterId], references: [id], onDelete: Restrict)
+  landlordId                String        @map("landlord_id") @db.VarChar(36)
+  landlord                  User          @relation("LandlordAppointments", fields: [landlordId], references: [id], onDelete: Restrict)
+  appointmentCode           String        @unique @map("appointment_code") @db.VarChar(20)
+  viewingMode               ViewingMode   @default(in_person) @map("viewing_mode")
+  virtualMeetingUrl         String?       @map("virtual_meeting_url") @db.VarChar(500)
+  status                    ViewingStatus @default(requested)
+  confirmationSmsDispatched Boolean       @default(false) @map("confirmation_sms_dispatched")
+  scheduledFor              DateTime      @map("scheduled_for")
+  confirmedAt               DateTime?     @map("confirmed_at")
+  completedAt               DateTime?     @map("completed_at")
+
+  @@map("viewing_appointments")
+}
+
+// ============================================================================
+// SUB-05: PROPERTY LISTING & INVENTORY OPERATIONS (2 Tables)
+// ============================================================================
+
+model Listing {
+  id               String           @id @default(uuid()) @db.VarChar(36)
+  propertyId       String           @map("property_id") @db.VarChar(36)
+  property         Property         @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  landlordId       String           @map("landlord_id") @db.VarChar(36)
+  landlord         User             @relation(fields: [landlordId], references: [id], onDelete: Restrict)
+  listingType      ListingType      @default(entire_flat) @map("listing_type")
+  unitNumber       String?          @map("unit_number") @db.VarChar(50)
+  floorLevel       Int              @map("floor_level")
+  bedRooms         Int              @default(1) @map("bed_rooms")
+  bathRooms        Int              @default(1) @map("bath_rooms")
+  balconies        Int              @default(0)
+  carpetAreaSqft   Int              @map("carpet_area_sqft")
+  furnishing       FurnishingStatus @default(unfurnished)
+  preferredPersona PersonaType      @default(family) @map("preferred_persona")
+  availableFrom    DateTime         @map("available_from") @db.Date
+  isNegotiable     Boolean          @default(false) @map("is_negotiable")
+  listingStatus    String           @default("active") @map("listing_status") @db.VarChar(30)
+  viewCount        Int              @default(0) @map("view_count")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @default(now()) @updatedAt @map("updated_at")
+
+  // Relationships
+  costBreakdown       PropertyCostBreakdown?
+  media               ListingMedia[]
+  shortlists          Shortlist[]
+  dossierSubmissions  DossierSubmission[]
+  viewingSlots        ViewingSlot[]
+  viewingAppointments ViewingAppointment[]
+  agreements          TenancyAgreement[]
+
+  @@index([listingType, preferredPersona])
+  @@index([availableFrom])
+  @@map("listings")
+}
+
+model ListingMedia {
+  id           String   @id @default(uuid()) @db.VarChar(36)
+  listingId    String   @map("listing_id") @db.VarChar(36)
+  listing      Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  mediaType    String   @map("media_type") @db.VarChar(30)
+  mediaUrl     String   @map("media_url") @db.VarChar(500)
+  thumbnailUrl String?  @map("thumbnail_url") @db.VarChar(500)
+  displayOrder Int      @default(1) @map("display_order")
+  isCoverPhoto Boolean  @default(false) @map("is_cover_photo")
+  uploadedAt   DateTime @default(now()) @map("uploaded_at")
+
+  @@map("listing_media")
+}
+
+// ============================================================================
+// SUB-06: TRUST & DOCUMENT VERIFICATION GATEWAY (2 Tables)
+// ============================================================================
+
+model DeedVerification {
+  id                      String          @id @default(uuid()) @db.VarChar(36)
+  propertyId              String          @map("property_id") @db.VarChar(36)
+  property                Property        @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  landlordId              String          @map("landlord_id") @db.VarChar(36)
+  landlord                User            @relation(fields: [landlordId], references: [id], onDelete: Restrict)
+  ownershipDocumentType   String          @map("ownership_document_type") @db.VarChar(100)
+  documentUrl             String          @map("document_url") @db.VarChar(500)
+  sha256CryptographicHash String          @map("sha256_cryptographic_hash") @db.VarChar(64)
+  auditStatus             DeedAuditStatus @default(pending_audit) @map("audit_status")
+  auditedByAdminId        String?         @map("audited_by_admin_id") @db.VarChar(36)
+  auditedByAdmin          User?           @relation("AdminAuditedDeeds", fields: [auditedByAdminId], references: [id], onDelete: SetNull)
+  auditorNotes            String?         @map("auditor_notes") @db.Text
+  trustBadgeConferred     Boolean         @default(false) @map("trust_badge_conferred")
+  submittedAt             DateTime        @default(now()) @map("submitted_at")
+  auditedAt               DateTime?       @map("audited_at")
+
+  @@index([sha256CryptographicHash])
+  @@map("deed_verifications")
+}
+
+model FlaggedCredential {
+  id                    String    @id @default(uuid()) @db.VarChar(36)
+  propertyId            String    @map("property_id") @db.VarChar(36)
+  property              Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  reportedByUserId      String    @map("reported_by_user_id") @db.VarChar(36)
+  reportedByUser        User      @relation("ReportedFlags", fields: [reportedByUserId], references: [id], onDelete: Restrict)
+  flagReason            String    @map("flag_reason") @db.VarChar(100)
+  evidenceDescription   String    @map("evidence_description") @db.Text
+  evidenceUrl           String?   @map("evidence_url") @db.VarChar(500)
+  resolutionStatus      String    @default("open") @map("resolution_status") @db.VarChar(30)
+  investigatedByAdminId String?   @map("investigated_by_admin_id") @db.VarChar(36)
+  investigatedByAdmin   User?     @relation("InvestigatedFlags", fields: [investigatedByAdminId], references: [id], onDelete: SetNull)
+  createdAt             DateTime  @default(now()) @map("created_at")
+  resolvedAt            DateTime? @map("resolved_at")
+
+  @@map("flagged_credentials")
+}
+
+// ============================================================================
+// SUB-07: TENANCY OPERATIONS & FINANCIAL SETTLEMENT (3 Tables)
+// ============================================================================
+
+model TenancyAgreement {
+  id                    String          @id @default(uuid()) @db.VarChar(36)
+  listingId             String          @map("listing_id") @db.VarChar(36)
+  listing               Listing         @relation(fields: [listingId], references: [id], onDelete: Restrict)
+  renterId              String          @map("renter_id") @db.VarChar(36)
+  renter                User            @relation("RenterAgreements", fields: [renterId], references: [id], onDelete: Restrict)
+  landlordId            String          @map("landlord_id") @db.VarChar(36)
+  landlord              User            @relation("LandlordAgreements", fields: [landlordId], references: [id], onDelete: Restrict)
+  agreementSerialNumber String          @unique @map("agreement_serial_number") @db.VarChar(64)
+  contractHtmlPayload   String          @map("contract_html_payload") @db.Text
+  monthlyRentAmount     Decimal         @map("monthly_rent_amount") @db.Decimal(12, 2)
+  securityDepositAmount Decimal         @map("security_deposit_amount") @db.Decimal(12, 2)
+  leaseStartDate        DateTime        @map("lease_start_date") @db.Date
+  leaseEndDate          DateTime        @map("lease_end_date") @db.Date
+  noticePeriodDays      Int             @default(60) @map("notice_period_days")
+  status                AgreementStatus @default(draft)
+  renterSignatureHash   String?         @map("renter_signature_hash") @db.VarChar(64)
+  renterSignedAt        DateTime?       @map("renter_signed_at")
+  landlordSignatureHash String?         @map("landlord_signature_hash") @db.VarChar(64)
+  landlordSignedAt      DateTime?       @map("landlord_signed_at")
+  executedAt            DateTime?       @map("executed_at")
+  createdAt             DateTime        @default(now()) @map("created_at")
+
+  // Relationships
+  transactions PaymentTransaction[]
+  ledgers      RentLedger[]
+  cimsExports  DmpCimsExport[]
+  disputes     Dispute[]
+
+  @@index([renterId, status])
+  @@map("tenancy_agreements")
+}
+
+model PaymentTransaction {
+  id                     String         @id @default(uuid()) @db.VarChar(36)
+  agreementId            String         @map("agreement_id") @db.VarChar(36)
+  agreement              TenancyAgreement @relation(fields: [agreementId], references: [id], onDelete: Restrict)
+  payerUserId            String         @map("payer_user_id") @db.VarChar(36)
+  payer                  User           @relation("PayerTransactions", fields: [payerUserId], references: [id], onDelete: Restrict)
+  payeeUserId            String         @map("payee_user_id") @db.VarChar(36)
+  payee                  User           @relation("PayeeTransactions", fields: [payeeUserId], references: [id], onDelete: Restrict)
+  paymentType            PaymentType    @map("payment_type")
+  amount                 Decimal        @db.Decimal(12, 2)
+  platformServiceFee     Decimal        @default(0.00) @map("platform_service_fee") @db.Decimal(10, 2)
+  paymentChannel         PaymentChannel @default(bkash) @map("payment_channel")
+  merchantTransactionId String         @unique @map("merchant_transaction_id") @db.VarChar(100)
+  mfsGatewayTrxId        String?        @map("mfs_gateway_trx_id") @db.VarChar(100)
+  status                 PaymentStatus  @default(initiated)
+  initiatedAt            DateTime       @default(now()) @map("initiated_at")
+  settledAt              DateTime?      @map("settled_at")
+
+  // Relationships
+  reconciledLedgers RentLedger[]
+
+  @@index([agreementId, status])
+  @@map("payment_transactions")
+}
+
+model RentLedger {
+  id                         String             @id @default(uuid()) @db.VarChar(36)
+  agreementId                String             @map("agreement_id") @db.VarChar(36)
+  agreement                  TenancyAgreement   @relation(fields: [agreementId], references: [id], onDelete: Cascade)
+  billingMonth               DateTime           @map("billing_month") @db.Date
+  baseRentDue                Decimal            @map("base_rent_due") @db.Decimal(12, 2)
+  utilityChargesDue          Decimal            @default(0.00) @map("utility_charges_due") @db.Decimal(10, 2)
+  totalBilled                Decimal            @map("total_billed") @db.Decimal(12, 2)
+  totalPaid                  Decimal            @default(0.00) @map("total_paid") @db.Decimal(12, 2)
+  outstandingBalance         Decimal            @default(0.00) @map("outstanding_balance") @db.Decimal(12, 2)
+  dueDate                    DateTime           @map("due_date") @db.Date
+  status                     LedgerStatus       @default(unpaid)
+  lastPaymentTransactionId   String?            @map("last_payment_transaction_id") @db.VarChar(36)
+  lastPaymentTransaction     PaymentTransaction? @relation(fields: [lastPaymentTransactionId], references: [id], onDelete: SetNull)
+  reconciledAt               DateTime?          @map("reconciled_at")
+
+  @@unique([agreementId, billingMonth])
+  @@index([agreementId, billingMonth])
+  @@map("rent_ledgers")
+}
+
+// ============================================================================
+// SUB-08: MUNICIPAL COMPLIANCE & PLATFORM GOVERNANCE (3 Tables)
+// ============================================================================
+
+model DmpCimsExport {
+  id                      String           @id @default(uuid()) @db.VarChar(36)
+  renterId                String           @map("renter_id") @db.VarChar(36)
+  renter                  User             @relation("RenterCimsExports", fields: [renterId], references: [id], onDelete: Restrict)
+  agreementId             String           @map("agreement_id") @db.VarChar(36)
+  agreement               TenancyAgreement @relation(fields: [agreementId], references: [id], onDelete: Restrict)
+  dossierId               String           @map("dossier_id") @db.VarChar(36)
+  dossier                 TenancyDossier   @relation(fields: [dossierId], references: [id], onDelete: Restrict)
+  policeStationThana      String           @map("police_station_thana") @db.VarChar(100)
+  cimsTrackingNumber      String           @unique @map("cims_tracking_number") @db.VarChar(64)
+  encryptedCimsArchiveUrl String           @map("encrypted_cims_archive_url") @db.VarChar(500)
+  status                  CimsExportStatus @default(draft)
+  exportedByAdminId       String?          @map("exported_by_admin_id") @db.VarChar(36)
+  exportedByAdmin         User?            @relation("AdminCimsExports", fields: [exportedByAdminId], references: [id], onDelete: SetNull)
+  dispatchedAt            DateTime?        @map("dispatched_at")
+  acknowledgedAt          DateTime?        @map("acknowledged_at")
+  createdAt               DateTime         @default(now()) @map("created_at")
+
+  @@map("dmp_cims_exports")
+}
+
+model Dispute {
+  id                          String        @id @default(uuid()) @db.VarChar(36)
+  agreementId                 String        @map("agreement_id") @db.VarChar(36)
+  agreement                   TenancyAgreement @relation(fields: [agreementId], references: [id], onDelete: Restrict)
+  raisedByUserId              String        @map("raised_by_user_id") @db.VarChar(36)
+  raisedByUser                User          @relation("RaisedDisputes", fields: [raisedByUserId], references: [id], onDelete: Restrict)
+  respondentUserId            String        @map("respondent_user_id") @db.VarChar(36)
+  respondentUser              User          @relation("RespondentDisputes", fields: [respondentUserId], references: [id], onDelete: Restrict)
+  disputeCategory             String        @map("dispute_category") @db.VarChar(100)
+  complaintDetails            String        @map("complaint_details") @db.Text
+  claimedDisputeAmount        Decimal?      @map("claimed_dispute_amount") @db.Decimal(12, 2)
+  status                      DisputeStatus @default(open)
+  assignedArbitratorAdminId   String?       @map("assigned_arbitrator_admin_id") @db.VarChar(36)
+  assignedArbitratorAdmin     User?         @relation("ArbitratedDisputes", fields: [assignedArbitratorAdminId], references: [id], onDelete: SetNull)
+  arbitratorResolutionSummary String?       @map("arbitrator_resolution_summary") @db.Text
+  resolvedAt                  DateTime?     @map("resolved_at")
+  createdAt                   DateTime      @default(now()) @map("created_at")
+
+  @@map("disputes")
+}
+
+model AuditLog {
+  id               String   @id @default(uuid()) @db.VarChar(36)
+  actorUserId      String   @map("actor_user_id") @db.VarChar(36)
+  actorUser        User     @relation(fields: [actorUserId], references: [id], onDelete: Restrict)
+  actionType       String   @map("action_type") @db.VarChar(100)
+  targetEntityType String   @map("target_entity_type") @db.VarChar(100)
+  targetEntityId   String   @map("target_entity_id") @db.VarChar(36)
+  ipAddress        String   @map("ip_address") @db.VarChar(45)
+  userAgent        String?  @map("user_agent") @db.Text
+  changePayload    Json?    @map("change_payload")
+  createdAt        DateTime @default(now()) @map("created_at")
+
+  @@map("audit_logs")
+}
