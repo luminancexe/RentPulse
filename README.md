@@ -135,6 +135,8 @@ For in-depth technical documentation, design tokens, platform diagrams, and deli
 - 🛠️ **[Planned Technology Stack](ARCHITECTURE.md#️-planned-technology-stack)** — Detailed component breakdown (Next.js 15, React Native Expo, PostGIS, Barikoi Maps, Web Crypto AES-256).
 - 📋 **[16-Week Project Roadmap & Milestones](ARCHITECTURE.md#-project-roadmap)** — Agile delivery across Phases 1 through 6.
 - 📑 **[Phase 1 Completion Report](reports/PHASE_1_COMPLETION_REPORT.md)** — Deliverables sign-off and verification artifacts.
+- 📑 **[Phase 2 Completion Report](reports/PHASE_2_COMPLETION_REPORT.md)** — 27-table relational schema, PostGIS spatial layer, Dhaka centroids, and seed dataset.
+- 📂 **[Reports Directory Index](reports/README.md)** — Full milestone index, audit standards, and quality criteria.
 
 ---
 
@@ -150,12 +152,14 @@ RentPulse/
 │   │   └── styles/                  # Tailwind tokens, typography, CSS variables
 │   └── mobile/                      # React Native Expo (Cross-Platform Mobile App)
 ├── packages/
-│   ├── db/                          # Prisma / Drizzle ORM schema (27 PostgreSQL tables)
+│   ├── db/                          # Prisma ORM schema (27 PostgreSQL tables & PostGIS spatial engine)
 │   ├── matching-engine/             # Python FastAPI / TS vector roommate scoring
 │   └── shared-types/                # Shared TypeScript DTOs and API interfaces
 ├── config/                          # Tailwind presets, ESLint configs, TypeScript base
 ├── reports/                         # Phase completion reports & audit artifacts
-│   └── PHASE_1_COMPLETION_REPORT.md # Phase 1 verification and deliverables sign-off
+│   ├── README.md                    # Reports index and delivery governance guide
+│   ├── PHASE_1_COMPLETION_REPORT.md # Phase 1 verification and deliverables sign-off
+│   └── PHASE_2_COMPLETION_REPORT.md # Phase 2 database, PostGIS & seed verification
 ├── .gitignore                       # Multi-stack ignore rules (Node, Next, Expo, Python)
 ├── ARCHITECTURE.md                  # Design system, platform architecture, tech stack & roadmap
 └── README.md                        # Master overview, mission, domain lifecycle & capabilities
