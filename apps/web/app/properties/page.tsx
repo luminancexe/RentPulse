@@ -117,9 +117,9 @@ export default function PropertiesDiscoveryPage() {
 
       {/* Primary Sticky Header */}
       <header className="sticky top-0 z-40 bg-surface/90 backdrop-blur-md border-b border-hairline">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+        <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 h-22 sm:h-24 flex items-center justify-between gap-6">
           {/* Logo & Back button */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-5 shrink-0">
             <Link
               href="/"
               className="inline-flex items-center gap-1.5 text-xs text-ink-secondary hover:text-ink-primary font-medium transition-colors"
@@ -129,17 +129,17 @@ export default function PropertiesDiscoveryPage() {
             </Link>
 
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-forest flex items-center justify-center p-1.5 text-canvas shadow-subtle">
-                <Image src="/logo.png" alt="RentPulse" width={24} height={24} className="brightness-200" />
+              <div className="w-9 h-9 rounded-xl bg-forest flex items-center justify-center p-1.5 text-canvas shadow-subtle shrink-0">
+                <Image src="/logo.png" alt="RentPulse" width={26} height={26} className="brightness-200" />
               </div>
-              <span className="font-display font-medium text-xl tracking-tight text-ink-primary">
+              <span className="font-editorial text-2xl font-bold tracking-tight text-ink-primary">
                 RentPulse
               </span>
             </Link>
           </div>
 
-          {/* Central Dual-Mode Segmented Control */}
-          <div className="flex-1 max-w-md mx-auto hidden md:flex justify-center">
+          {/* Central Dual-Mode Segmented Control (Spacious single-line pill) */}
+          <div className="hidden md:flex items-center justify-center shrink-0">
             <SegmentedControl
               options={modeOptions}
               value={activeMode}
@@ -151,38 +151,40 @@ export default function PropertiesDiscoveryPage() {
           </div>
 
           {/* View Mode Toggle (Grid vs Split Map) */}
-          <div className="flex items-center gap-2">
-            <div className="inline-flex p-1 rounded-full bg-muted-sand/70 border border-hairline">
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="inline-flex p-1 rounded-full bg-muted-sand/70 border border-hairline shadow-subtle">
               <button
                 type="button"
                 onClick={() => setViewLayout("grid")}
                 aria-label="Grid layout view"
-                className={`p-2 rounded-full transition-all cursor-pointer ${
+                className={`p-2 sm:px-3 sm:py-2 rounded-full transition-all cursor-pointer flex items-center gap-1.5 text-xs font-sans font-medium ${
                   viewLayout === "grid"
-                    ? "bg-surface text-ink-primary shadow-subtle border border-hairline"
+                    ? "bg-surface text-ink-primary shadow-subtle border border-hairline font-semibold"
                     : "text-ink-secondary hover:text-ink-primary"
                 }`}
               >
                 <LayoutGrid className="w-4 h-4" />
+                <span className="hidden lg:inline">Grid</span>
               </button>
               <button
                 type="button"
                 onClick={() => setViewLayout("split_map")}
                 aria-label="Split map view"
-                className={`p-2 rounded-full transition-all cursor-pointer ${
+                className={`p-2 sm:px-3 sm:py-2 rounded-full transition-all cursor-pointer flex items-center gap-1.5 text-xs font-sans font-medium ${
                   viewLayout === "split_map"
-                    ? "bg-surface text-ink-primary shadow-subtle border border-hairline"
+                    ? "bg-surface text-ink-primary shadow-subtle border border-hairline font-semibold"
                     : "text-ink-secondary hover:text-ink-primary"
                 }`}
               >
                 <MapIcon className="w-4 h-4" />
+                <span className="hidden lg:inline">Map</span>
               </button>
             </div>
           </div>
         </div>
 
         {/* Mobile Dual-Mode Switcher */}
-        <div className="md:hidden px-4 pb-3 flex justify-center">
+        <div className="md:hidden px-4 py-2.5 border-t border-hairline/60 bg-surface/40 flex justify-center overflow-x-auto no-scrollbar">
           <SegmentedControl
             options={modeOptions}
             value={activeMode}
@@ -191,7 +193,7 @@ export default function PropertiesDiscoveryPage() {
               setSelectedMapProperty(null);
             }}
             size="sm"
-            className="w-full justify-between"
+            className="w-auto shrink-0"
           />
         </div>
       </header>

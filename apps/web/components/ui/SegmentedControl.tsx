@@ -29,8 +29,8 @@ export function SegmentedControl<T extends string>({
     <div
       role="radiogroup"
       className={cn(
-        "inline-flex p-1 rounded-full bg-muted-sand/80 border border-hairline backdrop-blur-sm select-none",
-        size === "sm" ? "h-9" : "h-11",
+        "inline-flex items-center p-1.5 rounded-full bg-muted-sand/90 border border-hairline backdrop-blur-md select-none shrink-0 shadow-subtle",
+        size === "sm" ? "h-10" : "h-12 sm:h-13",
         className
       )}
     >
@@ -44,19 +44,19 @@ export function SegmentedControl<T extends string>({
             aria-checked={isSelected}
             onClick={() => onChange(opt.value)}
             className={cn(
-              "relative inline-flex items-center justify-center gap-2 rounded-full font-sans font-medium transition-all duration-200 cursor-pointer",
-              size === "sm" ? "px-3 text-xs" : "px-5 text-sm",
+              "relative inline-flex items-center justify-center gap-2.5 rounded-full font-sans transition-all duration-200 cursor-pointer whitespace-nowrap shrink-0 h-full",
+              size === "sm" ? "px-3.5 text-xs" : "px-5 sm:px-6 text-sm",
               isSelected
-                ? "bg-surface text-ink-primary shadow-subtle border border-hairline font-semibold"
-                : "text-ink-secondary hover:text-ink-primary hover:bg-surface/40"
+                ? "bg-surface text-ink-primary shadow-sm border border-hairline font-semibold"
+                : "text-ink-secondary hover:text-ink-primary hover:bg-surface/50 font-medium"
             )}
           >
-            {opt.icon && <span className="opacity-80">{opt.icon}</span>}
-            <span>{opt.label}</span>
+            {opt.icon && <span className="opacity-80 shrink-0">{opt.icon}</span>}
+            <span className="whitespace-nowrap leading-none tracking-tight">{opt.label}</span>
             {opt.badge && (
               <span
                 className={cn(
-                  "ml-1 px-1.5 py-0.5 rounded-full text-[10px] font-semibold leading-none",
+                  "ml-1.5 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold leading-none whitespace-nowrap shrink-0 transition-colors",
                   isSelected
                     ? "bg-forest/10 text-forest"
                     : "bg-ink-primary/5 text-ink-secondary"
