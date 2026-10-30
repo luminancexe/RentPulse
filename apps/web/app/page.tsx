@@ -265,10 +265,10 @@ export default function HomePage() {
 
           {/* Center Navigation Links */}
           <nav className="hidden md:flex items-center gap-8 lg:gap-10 text-sm font-medium text-white/90">
-            <Link href="#rentals" className="hover:text-amber-100 transition-colors duration-200">
+            <Link href="/properties" className="hover:text-amber-100 transition-colors duration-200">
               Explore Properties
             </Link>
-            <Link href="#neighborhoods" className="hover:text-amber-100 transition-colors duration-200">
+            <Link href="/properties" className="hover:text-amber-100 transition-colors duration-200">
               Search by Map
             </Link>
             <Link href="#why-rentpulse" className="hover:text-amber-100 transition-colors duration-200">
@@ -356,13 +356,13 @@ export default function HomePage() {
 
               {/* Search Button */}
               <div className="sm:col-span-1 lg:col-span-2">
-                <button
-                  type="button"
+                <Link
+                  href="/properties"
                   className="w-full h-12 bg-[#0084FF] hover:bg-[#0073E6] text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.97] cursor-pointer whitespace-nowrap"
                 >
                   <Search className="w-4 h-4 shrink-0" />
                   <span>Search</span>
-                </button>
+                </Link>
               </div>
 
             </div>
@@ -410,7 +410,7 @@ export default function HomePage() {
             ))}
 
             <Link 
-              href="#" 
+              href="/properties" 
               className="flex items-center gap-1 text-sm font-semibold text-[#0084FF] hover:underline pl-3 whitespace-nowrap shrink-0"
             >
               <span>View all</span>
