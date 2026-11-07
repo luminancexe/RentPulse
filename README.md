@@ -155,6 +155,7 @@ RentPulse/
 │   └── shared-types/                # Shared TypeScript DTOs and API interfaces
 ├── config/                          # Tailwind presets, ESLint configs, TypeScript base
 ├── reports/                         # Phase completion reports & audit artifacts
+├── tests/                           # Unified master test runner & subsystem verification suites
 ├── .gitignore                       # Multi-stack ignore rules (Node, Next, Expo, Python)
 ├── ARCHITECTURE.md                  # Design system, platform architecture, tech stack & roadmap
 └── README.md                        # Master overview, mission, domain lifecycle & capabilities
