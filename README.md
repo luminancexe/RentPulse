@@ -120,9 +120,9 @@ The completed RentPulse ecosystem is planned to provide:
 - **Inspection Calendar:** Real-time slot management with automated SMS confirmation alerts via domestic telecom gateways.
 
 ### Tenancy Agreements & DMP Police Compliance
-- **Bilingual Lease Generation:** Legally structured PDF contracts in Bangla and English with digital signature timestamps.
-- **DMP CIMS One-Click Export:** Automated generation of police tenant verification forms in full statutory format.
-- **Rent Ledger & MFS Deep-Linking:** Monthly payment status tracking with direct redirection to bKash / Nagad mobile financial switches.
+- **Bilingual Lease Generation:** Legally structured PDF contracts in Bangla and English compliant with the Premises Rent Control Act, 1991.
+- **DMP CIMS Statutory Export:** Automated generation and validation of Dhaka Metropolitan Police Citizen Information Management System (CIMS) Form-2 tenant registration.
+- **Multi-Rail Rent Ledger:** Real-time double-entry ledger with instant checkout via debit/credit cards (Visa, Mastercard, AMEX) and mobile financial services (bKash, Nagad), complete with statutory digital rent receipts (*বাড়ি ভাড়ার মানি রিসিট*).
 
 ---
 
@@ -143,10 +143,10 @@ For in-depth technical documentation, design tokens, platform diagrams, and deli
 ```text
 RentPulse/
 ├── apps/
-│   ├── web/                         # Next.js 15 App Router (Editorial Hotel Web Platform)
-│   │   ├── app/                     # Routes: (auth), (discovery), (dossier), (landlord), api/
-│   │   ├── components/              # UI Kit: ui/, listings/, matching/, booking/
-│   │   ├── lib/                     # Utilities, PostGIS queries, auth tokens
+│   ├── web/                         # Next.js 15 App Router (Editorial Boutique Web Platform)
+│   │   ├── app/                     # Routes: properties/, roommates/, dossier/, landlord/, schedule/, lease/, police-verification/, ledger/
+│   │   ├── components/              # UI Kit: ui/, listings/, matching/, viewing/, navigation/
+│   │   ├── lib/                     # Utilities, crypto vault, DMP CIMS, lease generator, ledger
 │   │   └── styles/                  # Tailwind tokens, typography, CSS variables
 │   └── mobile/                      # React Native Expo (Cross-Platform Mobile App)
 ├── packages/
