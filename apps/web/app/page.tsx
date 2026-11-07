@@ -264,18 +264,21 @@ export default function HomePage() {
           </Link>
 
           {/* Center Navigation Links */}
-          <nav className="hidden md:flex items-center gap-8 lg:gap-10 text-sm font-medium text-white/90">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium text-white/90">
             <Link href="/properties" className="hover:text-amber-100 transition-colors duration-200">
               Explore Properties
             </Link>
-            <Link href="/properties" className="hover:text-amber-100 transition-colors duration-200">
-              Search by Map
+            <Link href="/roommates" className="hover:text-amber-100 transition-colors duration-200 flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>Roommates</span>
             </Link>
-            <Link href="#why-rentpulse" className="hover:text-amber-100 transition-colors duration-200">
-              List Your Property
+            <Link href="/dossier" className="hover:text-amber-100 transition-colors duration-200 flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-300" />
+              <span>Dossier Vault</span>
             </Link>
-            <Link href="#why-rentpulse" className="hover:text-amber-100 transition-colors duration-200">
-              About Us
+            <Link href="/landlord/verify" className="hover:text-amber-100 transition-colors duration-200 flex items-center gap-1">
+              <FileCheck2 className="w-3.5 h-3.5 text-amber-200" />
+              <span>Deed Anti-Fraud</span>
             </Link>
           </nav>
 

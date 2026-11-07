@@ -152,6 +152,29 @@ export default function PropertiesDiscoveryPage() {
 
           {/* View Mode Toggle (Grid vs Split Map) */}
           <div className="flex items-center gap-3 shrink-0">
+            {/* Phase 4 Quick Navigation Links */}
+            <div className="hidden xl:flex items-center gap-2">
+              <Link
+                href="/roommates"
+                className="px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-900 border border-emerald-300 hover:bg-emerald-100 flex items-center gap-1 transition-colors"
+              >
+                <Users className="w-3.5 h-3.5 text-emerald-700" />
+                <span>Roommate Synergy</span>
+              </Link>
+              <Link
+                href="/dossier"
+                className="px-3 py-1.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-800 border border-stone-300 hover:bg-stone-200 flex items-center gap-1 transition-colors"
+              >
+                <span>Dossier</span>
+              </Link>
+              <Link
+                href="/landlord/verify"
+                className="px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-300 hover:bg-amber-100 flex items-center gap-1 transition-colors"
+              >
+                <span>Deed Verify</span>
+              </Link>
+            </div>
+
             <div className="inline-flex p-1 rounded-full bg-muted-sand/70 border border-hairline shadow-subtle">
               <button
                 type="button"
