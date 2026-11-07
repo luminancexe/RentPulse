@@ -336,7 +336,7 @@ export default function RoommatesPage() {
       {/* Editorial Footer */}
       <footer className="mt-auto border-t border-hairline bg-surface py-8">
         <div className="max-w-[1720px] mx-auto px-6 text-center text-xs text-ink-tertiary">
-          RentPulse // Roommate Synergy Engine • 5-Vector Cosine Similarity & Dynamic SVG Radar Visualizer
+          RentPulse Roommate Synergy Engine • 5-Vector Cosine Similarity & Dynamic SVG Radar Visualizer
         </div>
       </footer>
     </div>

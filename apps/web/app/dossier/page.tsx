@@ -171,7 +171,7 @@ export default function DossierPage() {
                   <Lock className="w-3.5 h-3.5" />
                   <span>Zero-Knowledge Credential Vault</span>
                 </GlassBadge>
-                <span className="text-xs text-ink-tertiary">Phase 4 Security</span>
+                <span className="text-xs text-ink-tertiary">Client-Side Cryptography</span>
               </div>
               <h1 className="text-3xl sm:text-4xl font-display font-bold text-ink-primary tracking-tight">
                 Encrypted Digital Tenancy Dossier
@@ -696,7 +696,7 @@ export default function DossierPage() {
       {/* Footer */}
       <footer className="mt-auto border-t border-hairline bg-surface py-8">
         <div className="max-w-[1720px] mx-auto px-6 text-center text-xs text-ink-tertiary">
-          RentPulse // Tenancy Dossier Vault • AES-GCM 256-Bit Cryptography & SHA-256 Tamper Protection
+          RentPulse Tenancy Dossier Vault • AES-GCM 256-Bit Cryptography & SHA-256 Tamper Protection
         </div>
       </footer>
     </div>

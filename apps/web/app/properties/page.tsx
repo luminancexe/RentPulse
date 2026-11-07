@@ -152,7 +152,7 @@ export default function PropertiesDiscoveryPage() {
 
           {/* View Mode Toggle (Grid vs Split Map) */}
           <div className="flex items-center gap-3 shrink-0">
-            {/* Phase 4 Quick Navigation Links */}
+            {/* Ecosystem Navigation Links */}
             <div className="hidden xl:flex items-center gap-2">
               <Link
                 href="/roommates"

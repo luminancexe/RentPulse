@@ -129,7 +129,7 @@ export function CohabitationQuiz({
         <div>
           <div className="flex items-center gap-2 mb-1.5">
             <GlassBadge variant="forest">
-              Phase 4 // Algorithmic Quiz
+              Habit & Lifestyle Assessment
             </GlassBadge>
             <span className="text-xs text-ink-tertiary font-sans">
               5-Dimensional Vector Space

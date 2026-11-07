@@ -214,7 +214,7 @@ export default function LandlordVerifyPage() {
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>Title Deed Verification Gate</span>
               </GlassBadge>
-              <span className="text-xs text-ink-tertiary">Phase 4 Security</span>
+              <span className="text-xs text-ink-tertiary">Municipal Deed Verification</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-display font-bold text-ink-primary tracking-tight">
               Lessor Ownership & Anti-Fraud Gate
@@ -519,7 +519,7 @@ export default function LandlordVerifyPage() {
       {/* Footer */}
       <footer className="mt-auto border-t border-hairline bg-surface py-8">
         <div className="max-w-[1720px] mx-auto px-6 text-center text-xs text-ink-tertiary">
-          RentPulse // Landlord Anti-Fraud Gate • SHA-256 Cryptographic Digest & Municipal Registry Verification
+          RentPulse Landlord Verification Gate • SHA-256 Cryptographic Digest & Municipal Registry Verification
         </div>
       </footer>
     </div>
