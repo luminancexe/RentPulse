@@ -14,7 +14,10 @@
     "db:generate": "npm run db:generate --workspace=packages/db",
     "db:push": "npm run db:push --workspace=packages/db",
     "db:seed": "npm run db:seed --workspace=packages/db",
-    "test:phase4": "sucrase-node apps/web/lib/verify-phase4.ts",
-    "test:phase5": "sucrase-node apps/web/lib/verify-phase5.ts"
+    "test": "npm run test:all",
+    "test:all": "sucrase-node tests/run-all.ts",
+    "test:db": "sucrase-node tests/verify-database.ts",
+    "test:phase4": "sucrase-node tests/verify-phase4.ts",
+    "test:phase5": "sucrase-node tests/verify-phase5.ts"
   }
 }
