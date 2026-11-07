@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import { CohabitationVector, DietaryPreference, SmokingPolicy, CohabitationProfile } from "@/lib/matching";
-import { Sparkles, CheckCircle2, Moon, Sparkle, Volume2, Users, UtensilsCrossed, Cigarette } from "lucide-react";
+import { Sparkles, CheckCircle2, Moon, Sparkle, Volume2, Users, UtensilsCrossed, Cigarette, ArrowRight, ArrowLeft } from "lucide-react";
+import { EditorialButton } from "@/components/ui/EditorialButton";
+import { GlassBadge } from "@/components/ui/GlassBadge";
 
 interface CohabitationQuizProps {
   initialProfile: CohabitationProfile;
@@ -114,42 +116,42 @@ export function CohabitationQuiz({
     setTimeout(() => {
       setIsSaved(false);
       if (onClose) onClose();
-    }, 1200);
+    }, 1000);
   };
 
   const currentStepData = steps[activeStep];
   const StepIcon = currentStepData.icon;
 
   return (
-    <div className="bg-[#FAF8F5] border-2 border-[#1F302B] rounded-2xl p-6 shadow-[4px_4px_0_#1F302B]">
+    <div className="bg-surface border border-hairline rounded-3xl p-6 sm:p-8 shadow-card transition-all">
       {/* Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-stone-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-5 border-b border-hairline gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 text-[10px] font-mono uppercase bg-emerald-100 text-emerald-900 border border-emerald-300 rounded font-semibold">
+          <div className="flex items-center gap-2 mb-1.5">
+            <GlassBadge variant="forest">
               Phase 4 // Algorithmic Quiz
-            </span>
-            <span className="text-xs text-stone-500 font-mono">
-              Vector Space: 5 Dimensions
+            </GlassBadge>
+            <span className="text-xs text-ink-tertiary font-sans">
+              5-Dimensional Vector Space
             </span>
           </div>
-          <h2 className="text-xl font-serif font-bold text-[#1F302B] mt-1">
-            5-Vector Cohabitation Questionnaire
+          <h2 className="text-xl sm:text-2xl font-display font-bold text-ink-primary tracking-tight">
+            Cohabitation Habit Assessment
           </h2>
         </div>
 
         {/* Step Indicator Tabs */}
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 self-start sm:self-auto">
           {steps.map((st, idx) => (
             <button
               key={st.id}
               onClick={() => setActiveStep(idx)}
-              className={`w-7 h-7 rounded-full text-xs font-mono font-bold transition-all ${
+              className={`w-8 h-8 rounded-full text-xs font-medium transition-all ${
                 idx === activeStep
-                  ? "bg-[#1F302B] text-white ring-2 ring-[#BD5338]"
+                  ? "bg-forest text-canvas shadow-subtle ring-2 ring-forest/20 font-bold"
                   : vector[st.dimension]
-                  ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
-                  : "bg-stone-200 text-stone-600"
+                  ? "bg-forest-light text-forest font-semibold"
+                  : "bg-muted-sand/70 text-ink-tertiary hover:text-ink-primary"
               }`}
             >
               {idx + 1}
@@ -160,22 +162,22 @@ export function CohabitationQuiz({
 
       {/* Active Step Container */}
       <div className="my-6">
-        <div className="flex items-start gap-3 mb-4">
-          <div className="p-2.5 rounded-xl bg-amber-100/70 border border-amber-300/80 text-[#BD5338]">
+        <div className="flex items-start gap-3.5 mb-5">
+          <div className="p-3 rounded-2xl bg-muted-sand/80 text-forest shrink-0">
             <StepIcon className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-stone-900 font-serif">
+            <h3 className="text-base font-display font-bold text-ink-primary">
               {currentStepData.title}
             </h3>
-            <p className="text-xs text-stone-600 mt-0.5">
+            <p className="text-xs text-ink-secondary mt-0.5 leading-relaxed">
               {currentStepData.description}
             </p>
           </div>
         </div>
 
         {/* Rating Options Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-2.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           {currentStepData.options.map((opt) => {
             const isSelected = vector[currentStepData.dimension] === opt.val;
             return (
@@ -183,24 +185,24 @@ export function CohabitationQuiz({
                 key={opt.val}
                 type="button"
                 onClick={() => handleOptionSelect(currentStepData.dimension, opt.val)}
-                className={`flex flex-col text-left p-3 rounded-xl border-2 transition-all relative ${
+                className={`flex flex-col text-left p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
                   isSelected
-                    ? "bg-[#1F302B] text-white border-[#1F302B] shadow-[2px_2px_0_#BD5338]"
-                    : "bg-white text-stone-800 border-stone-200 hover:border-stone-400 hover:bg-stone-50"
+                    ? "bg-forest text-canvas border-forest shadow-hover"
+                    : "bg-muted-sand/30 text-ink-primary border-hairline hover:bg-muted-sand/70 hover:border-hairline-hover"
                 }`}
               >
-                <div className="flex items-center justify-between w-full mb-1">
-                  <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
-                    isSelected ? "bg-white/20 text-white font-bold" : "bg-stone-100 text-stone-600 font-medium"
+                <div className="flex items-center justify-between w-full mb-2">
+                  <span className={`text-[10px] font-sans px-2 py-0.5 rounded-full ${
+                    isSelected ? "bg-white/20 text-canvas font-semibold" : "bg-white/80 text-ink-secondary border border-hairline"
                   }`}>
-                    SCORE {opt.val}/5
+                    Score {opt.val}/5
                   </span>
-                  {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-amber-300" />}
+                  {isSelected && <CheckCircle2 className="w-4 h-4 text-canvas" />}
                 </div>
-                <div className={`text-xs font-bold ${isSelected ? "text-white" : "text-stone-900"}`}>
+                <div className={`text-xs font-semibold ${isSelected ? "text-canvas" : "text-ink-primary"}`}>
                   {opt.label}
                 </div>
-                <div className={`text-[10px] mt-1 leading-tight ${isSelected ? "text-stone-200" : "text-stone-500"}`}>
+                <div className={`text-[11px] mt-1 leading-normal ${isSelected ? "text-canvas/80" : "text-ink-secondary"}`}>
                   {opt.desc}
                 </div>
               </button>
@@ -210,10 +212,10 @@ export function CohabitationQuiz({
       </div>
 
       {/* Dietary & Smoking Policy Constraints */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-xl bg-white border border-stone-200 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 rounded-2xl bg-muted-sand/40 border border-hairline mb-6">
         <div>
-          <label className="flex items-center gap-1.5 text-xs font-bold text-stone-900 mb-2">
-            <UtensilsCrossed className="w-3.5 h-3.5 text-[#BD5338]" />
+          <label className="flex items-center gap-1.5 text-xs font-semibold text-ink-primary mb-2.5">
+            <UtensilsCrossed className="w-3.5 h-3.5 text-forest" />
             Dietary Culture & Kitchen Preference:
           </label>
           <div className="flex flex-wrap gap-1.5">
@@ -222,10 +224,10 @@ export function CohabitationQuiz({
                 key={d}
                 type="button"
                 onClick={() => setDietary(d)}
-                className={`px-2.5 py-1 text-xs rounded-full border transition-all ${
+                className={`px-3.5 py-1.5 text-xs rounded-full border transition-all ${
                   dietary === d
-                    ? "bg-[#1F302B] text-white border-[#1F302B] font-semibold"
-                    : "bg-stone-50 text-stone-700 border-stone-200 hover:bg-stone-100"
+                    ? "bg-forest text-canvas border-forest font-medium shadow-sm"
+                    : "bg-surface text-ink-secondary border-hairline hover:border-hairline-hover hover:text-ink-primary"
                 }`}
               >
                 {d.toUpperCase().replace("_", " ")}
@@ -235,9 +237,9 @@ export function CohabitationQuiz({
         </div>
 
         <div>
-          <label className="flex items-center gap-1.5 text-xs font-bold text-stone-900 mb-2">
-            <Cigarette className="w-3.5 h-3.5 text-[#BD5338]" />
-            Smoking Policy in Flat:
+          <label className="flex items-center gap-1.5 text-xs font-semibold text-ink-primary mb-2.5">
+            <Cigarette className="w-3.5 h-3.5 text-terracotta" />
+            Flat Smoking Policy:
           </label>
           <div className="flex flex-wrap gap-1.5">
             {(["strictly_non_smoking", "balcony_only", "flexible"] as SmokingPolicy[]).map((s) => (
@@ -245,10 +247,10 @@ export function CohabitationQuiz({
                 key={s}
                 type="button"
                 onClick={() => setSmoking(s)}
-                className={`px-2.5 py-1 text-xs rounded-full border transition-all ${
+                className={`px-3.5 py-1.5 text-xs rounded-full border transition-all ${
                   smoking === s
-                    ? "bg-[#BD5338] text-white border-[#BD5338] font-semibold"
-                    : "bg-stone-50 text-stone-700 border-stone-200 hover:bg-stone-100"
+                    ? "bg-terracotta text-canvas border-terracotta font-medium shadow-sm"
+                    : "bg-surface text-ink-secondary border-hairline hover:border-hairline-hover hover:text-ink-primary"
                 }`}
               >
                 {s === "strictly_non_smoking"
@@ -263,42 +265,44 @@ export function CohabitationQuiz({
       </div>
 
       {/* Footer Controls */}
-      <div className="flex items-center justify-between pt-4 border-t border-stone-200">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between pt-5 border-t border-hairline gap-4">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
           {activeStep > 0 && (
-            <button
-              type="button"
+            <EditorialButton
+              variant="outline"
+              size="sm"
               onClick={() => setActiveStep(activeStep - 1)}
-              className="px-3.5 py-1.5 text-xs font-semibold text-stone-700 bg-white border border-stone-300 rounded-lg hover:bg-stone-50"
             >
-              ← Previous Dimension
-            </button>
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Previous Dimension</span>
+            </EditorialButton>
           )}
           {activeStep < steps.length - 1 && (
-            <button
-              type="button"
+            <EditorialButton
+              variant="outline"
+              size="sm"
               onClick={() => setActiveStep(activeStep + 1)}
-              className="px-3.5 py-1.5 text-xs font-semibold text-stone-900 bg-amber-100 border border-amber-300 rounded-lg hover:bg-amber-200"
             >
-              Next Dimension →
-            </button>
+              <span>Next Dimension</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </EditorialButton>
           )}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
           {isSaved && (
-            <span className="flex items-center gap-1 text-xs text-emerald-700 font-bold animate-pulse">
-              <CheckCircle2 className="w-4 h-4" /> Vector Profile Saved!
+            <span className="flex items-center gap-1 text-xs text-forest font-semibold animate-pulse">
+              <CheckCircle2 className="w-4 h-4" /> Preferences Updated!
             </span>
           )}
-          <button
-            type="button"
+          <EditorialButton
+            variant="primary"
+            size="md"
             onClick={handleSaveAndApply}
-            className="flex items-center gap-1.5 px-5 py-2 text-xs font-bold text-white bg-[#1F302B] rounded-xl border border-[#1F302B] shadow-[2px_2px_0_#BD5338] hover:bg-[#2C4A3E] transition-all"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            Recalculate Synergy Matches
-          </button>
+            <Sparkles className="w-4 h-4 text-amber-200" />
+            <span>Recalculate Synergy Matches</span>
+          </EditorialButton>
         </div>
       </div>
     </div>

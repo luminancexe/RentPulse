@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   DeedRecord,
   DocumentType,
@@ -9,6 +10,8 @@ import {
   SEED_DEED_REGISTRY,
   computeFileHash,
 } from "@/lib/deed-verifier";
+import { GlassBadge } from "@/components/ui/GlassBadge";
+import { EditorialButton } from "@/components/ui/EditorialButton";
 import {
   ShieldCheck,
   FileText,
@@ -18,11 +21,12 @@ import {
   Clock,
   Home,
   Users,
-  Search,
   Building2,
   Copy,
   Check,
   Hash,
+  ChevronLeft,
+  X,
 } from "lucide-react";
 
 export default function LandlordVerifyPage() {
@@ -136,73 +140,86 @@ export default function LandlordVerifyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#1C1A17] flex flex-col font-sans">
+    <div className="min-h-screen bg-canvas text-ink-primary flex flex-col font-sans">
       {/* Navigation */}
-      <header className="sticky top-0 z-40 bg-[#FAF8F5]/90 backdrop-blur-md border-b-2 border-[#1F302B]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className="w-8 h-8 rounded-lg bg-[#1F302B] text-amber-300 flex items-center justify-center font-serif font-black text-lg shadow-[2px_2px_0_#BD5338]">
-                R
-              </span>
-              <span className="font-serif font-bold text-xl tracking-tight text-[#1F302B]">
+      <header className="sticky top-0 z-40 bg-surface/90 backdrop-blur-md border-b border-hairline">
+        <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 h-20 sm:h-22 flex items-center justify-between gap-6">
+          {/* Logo & Back button */}
+          <div className="flex items-center gap-5 shrink-0">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 text-xs text-ink-secondary hover:text-ink-primary font-medium transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span className="hidden sm:inline">Home</span>
+            </Link>
+
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-forest flex items-center justify-center p-1.5 text-canvas shadow-subtle shrink-0">
+                <Image src="/logo.png" alt="RentPulse" width={26} height={26} className="brightness-200" />
+              </div>
+              <span className="font-editorial text-2xl font-bold tracking-tight text-ink-primary">
                 RentPulse
               </span>
             </Link>
-
-            <nav className="hidden md:flex items-center gap-1 text-xs font-semibold">
-              <Link
-                href="/properties"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-stone-600 hover:text-stone-900 hover:bg-stone-200/60 transition-colors"
-              >
-                <Home className="w-3.5 h-3.5" />
-                Discovery Feed
-              </Link>
-              <Link
-                href="/roommates"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-stone-600 hover:text-stone-900 hover:bg-stone-200/60 transition-colors"
-              >
-                <Users className="w-3.5 h-3.5" />
-                Roommate Synergy
-              </Link>
-              <Link
-                href="/dossier"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-stone-600 hover:text-stone-900 hover:bg-stone-200/60 transition-colors"
-              >
-                <ShieldCheck className="w-3.5 h-3.5" />
-                Tenancy Dossier
-              </Link>
-              <Link
-                href="/landlord/verify"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#1F302B] text-white font-bold"
-              >
-                <FileText className="w-3.5 h-3.5 text-amber-300" />
-                Deed Anti-Fraud
-              </Link>
-            </nav>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-1 text-[11px] font-mono bg-amber-100 text-amber-900 border border-amber-300 rounded-md font-bold">
-              ANTI-FRAUD GATE
-            </span>
+          {/* Central Subsystem Navigation Pill Links */}
+          <nav className="hidden md:flex items-center gap-1.5 p-1 rounded-full bg-muted-sand/70 border border-hairline shadow-subtle">
+            <Link
+              href="/properties"
+              className="px-4 py-2 rounded-full text-xs font-medium text-ink-secondary hover:text-ink-primary transition-colors flex items-center gap-1.5"
+            >
+              <Home className="w-3.5 h-3.5" />
+              <span>Discovery Feed</span>
+            </Link>
+            <Link
+              href="/roommates"
+              className="px-4 py-2 rounded-full text-xs font-medium text-ink-secondary hover:text-ink-primary transition-colors flex items-center gap-1.5"
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>Roommate Synergy</span>
+            </Link>
+            <Link
+              href="/dossier"
+              className="px-4 py-2 rounded-full text-xs font-medium text-ink-secondary hover:text-ink-primary transition-colors flex items-center gap-1.5"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Tenancy Dossier</span>
+            </Link>
+            <Link
+              href="/landlord/verify"
+              className="px-4 py-2 rounded-full text-xs font-semibold bg-surface text-ink-primary shadow-subtle border border-hairline flex items-center gap-1.5"
+            >
+              <FileText className="w-3.5 h-3.5 text-forest" />
+              <span>Deed Anti-Fraud</span>
+            </Link>
+          </nav>
+
+          <div className="flex items-center gap-3 shrink-0">
+            <GlassBadge variant="forest">
+              Anti-Fraud Gate
+            </GlassBadge>
           </div>
         </div>
       </header>
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <main className="flex-1 max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 py-8 sm:py-10 w-full">
         {/* Banner */}
-        <div className="mb-8 bg-white border-2 border-[#1F302B] rounded-2xl p-6 sm:p-8 shadow-[4px_4px_0_#1F302B]">
+        <div className="mb-8 bg-surface border border-hairline rounded-3xl p-8 sm:p-10 shadow-card">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-900 border border-amber-300 mb-3">
-              <ShieldCheck className="w-3.5 h-3.5 text-amber-700" />
-              <span>PHASE 4 // TITLE DEED CRYPTOGRAPHIC AUDITING</span>
+            <div className="flex items-center gap-2 mb-3">
+              <GlassBadge variant="forest">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                <span>Title Deed Verification Gate</span>
+              </GlassBadge>
+              <span className="text-xs text-ink-tertiary">Phase 4 Security</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-serif font-black text-[#1F302B] tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-display font-bold text-ink-primary tracking-tight">
               Lessor Ownership & Anti-Fraud Gate
             </h1>
-            <p className="text-sm text-stone-600 mt-2 leading-relaxed">
+            <p className="text-sm text-ink-secondary mt-2.5 leading-relaxed">
               To eradicate fake middleman brokers and ghost listings in Dhaka, RentPulse requires property owners to submit ownership documents. Every document is cryptographically hashed with SHA-256 before verification, conferring the verified lessor trust badge.
             </p>
           </div>
@@ -210,13 +227,13 @@ export default function LandlordVerifyPage() {
 
         {/* Success Alert */}
         {successMsg && (
-          <div className="mb-6 p-4 rounded-xl bg-emerald-50 border-2 border-emerald-600 text-emerald-950 text-xs font-medium flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          <div className="mb-6 p-4 rounded-2xl bg-forest-light border border-forest/20 text-forest text-xs font-medium flex items-center justify-between shadow-card">
+            <div className="flex items-center gap-2.5">
+              <CheckCircle2 className="w-4 h-4 text-forest shrink-0" />
               <span>{successMsg}</span>
             </div>
-            <button onClick={() => setSuccessMsg(null)} className="text-stone-400 hover:text-stone-700 font-bold">
-              ✕
+            <button onClick={() => setSuccessMsg(null)} className="text-forest/60 hover:text-forest font-bold p-1">
+              <X className="w-4 h-4" />
             </button>
           </div>
         )}
@@ -224,14 +241,14 @@ export default function LandlordVerifyPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
           {/* Deed Submission Form (5 Cols) */}
           <div className="lg:col-span-5">
-            <form onSubmit={handleSubmitDeed} className="bg-white border-2 border-[#1F302B] rounded-2xl p-6 shadow-[4px_4px_0_#1F302B]">
-              <h2 className="text-lg font-serif font-bold text-stone-900 pb-3 mb-4 border-b border-stone-200">
+            <form onSubmit={handleSubmitDeed} className="bg-surface border border-hairline rounded-3xl p-6 sm:p-8 shadow-card">
+              <h2 className="text-lg font-display font-bold text-ink-primary pb-3 mb-5 border-b border-hairline">
                 Register Property Title Deed
               </h2>
 
               <div className="space-y-4 text-xs">
                 <div>
-                  <label className="block font-bold text-stone-700 mb-1">
+                  <label className="block font-semibold text-ink-primary mb-1.5">
                     Property Title / Unit Name *
                   </label>
                   <input
@@ -240,13 +257,13 @@ export default function LandlordVerifyPage() {
                     placeholder="e.g. Sunset Residency, Flat 4B"
                     value={propertyTitle}
                     onChange={(e) => setPropertyTitle(e.target.value)}
-                    className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                    className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-bold text-stone-700 mb-1">
+                    <label className="block font-semibold text-ink-primary mb-1.5">
                       Landlord Legal Name *
                     </label>
                     <input
@@ -255,11 +272,11 @@ export default function LandlordVerifyPage() {
                       placeholder="e.g. Engr. Asaduzzaman"
                       value={landlordName}
                       onChange={(e) => setLandlordName(e.target.value)}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
                   <div>
-                    <label className="block font-bold text-stone-700 mb-1">
+                    <label className="block font-semibold text-ink-primary mb-1.5">
                       Contact Phone
                     </label>
                     <input
@@ -267,20 +284,20 @@ export default function LandlordVerifyPage() {
                       placeholder="+880 1711-..."
                       value={landlordPhone}
                       onChange={(e) => setLandlordPhone(e.target.value)}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 font-mono text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-bold text-stone-700 mb-1">
+                    <label className="block font-semibold text-ink-primary mb-1.5">
                       Dhaka Ward / Thana
                     </label>
                     <select
                       value={thana}
                       onChange={(e) => setThana(e.target.value)}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     >
                       <option value="Bashundhara R/A">Bashundhara R/A</option>
                       <option value="Dhanmondi">Dhanmondi</option>
@@ -291,7 +308,7 @@ export default function LandlordVerifyPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block font-bold text-stone-700 mb-1">
+                    <label className="block font-semibold text-ink-primary mb-1.5">
                       Holding / Plot # *
                     </label>
                     <input
@@ -300,19 +317,19 @@ export default function LandlordVerifyPage() {
                       placeholder="Plot 24, Road 5"
                       value={holdingNumber}
                       onChange={(e) => setHoldingNumber(e.target.value)}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block font-bold text-stone-700 mb-1">
+                  <label className="block font-semibold text-ink-primary mb-1.5">
                     Ownership Document Category *
                   </label>
                   <select
                     value={docType}
                     onChange={(e) => setDocType(e.target.value as DocumentType)}
-                    className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                    className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                   >
                     {Object.entries(DOCUMENT_TYPE_LABELS).map(([k, label]) => (
                       <option key={k} value={k}>
@@ -322,12 +339,12 @@ export default function LandlordVerifyPage() {
                   </select>
                 </div>
 
-                {/* File Upload Box with Real-time Client Hashing */}
+                {/* File Upload Box */}
                 <div>
-                  <label className="block font-bold text-stone-700 mb-1">
+                  <label className="block font-semibold text-ink-primary mb-1.5">
                     Upload Document PDF / Scanned Copy *
                   </label>
-                  <div className="relative border-2 border-dashed border-stone-300 rounded-xl p-4 text-center bg-[#FAF8F5] hover:bg-stone-50 transition-colors">
+                  <div className="relative border border-dashed border-hairline-hover rounded-2xl p-6 text-center bg-muted-sand/30 hover:bg-muted-sand/60 transition-colors">
                     <input
                       type="file"
                       required
@@ -335,71 +352,73 @@ export default function LandlordVerifyPage() {
                       onChange={handleFileChange}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
-                    <UploadCloud className="w-6 h-6 text-stone-400 mx-auto mb-1" />
-                    <p className="text-xs font-bold text-stone-700">
+                    <UploadCloud className="w-8 h-8 text-ink-tertiary mx-auto mb-2" />
+                    <p className="text-xs font-semibold text-ink-primary">
                       {selectedFile ? selectedFile.name : "Click to select or drag deed PDF/image"}
                     </p>
-                    <p className="text-[10px] text-stone-500 mt-0.5">
+                    <p className="text-[11px] text-ink-tertiary mt-1">
                       PDF, JPG, PNG up to 15MB
                     </p>
                   </div>
                 </div>
 
-                {/* Hashing Status & Duplicate Warning */}
+                {/* Hashing Status */}
                 {isHashing && (
-                  <div className="p-2.5 bg-amber-50 rounded-lg text-amber-900 font-mono text-[11px] flex items-center gap-2">
-                    <Clock className="w-3.5 h-3.5 animate-spin" />
+                  <div className="p-3 bg-muted-sand/60 rounded-xl text-ink-primary text-xs flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-forest animate-spin" />
                     <span>Computing SHA-256 Digest in Web Crypto API...</span>
                   </div>
                 )}
 
                 {calculatedHash && !isHashing && (
-                  <div className="p-3 bg-stone-900 text-stone-200 rounded-xl font-mono text-[11px] space-y-1">
-                    <div className="text-[9px] text-amber-300 uppercase tracking-wider font-bold flex items-center gap-1">
-                      <Hash className="w-3 h-3" />
+                  <div className="p-3.5 bg-ink-primary text-canvas rounded-2xl text-[11px] space-y-1">
+                    <div className="text-[10px] text-amber-300 uppercase tracking-wider font-semibold flex items-center gap-1">
+                      <Hash className="w-3.5 h-3.5" />
                       Computed SHA-256 Digest:
                     </div>
-                    <div className="break-all text-emerald-400 text-[10px] font-bold">
+                    <div className="break-all font-mono text-emerald-300 text-[10px]">
                       {calculatedHash}
                     </div>
                   </div>
                 )}
 
                 {isDuplicate && (
-                  <div className="p-3 bg-red-50 border border-red-300 rounded-xl text-red-900 text-xs flex items-start gap-2">
-                    <AlertTriangle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                  <div className="p-3.5 bg-terracotta-light border border-terracotta/20 rounded-2xl text-terracotta text-xs flex items-start gap-2.5">
+                    <AlertTriangle className="w-4 h-4 text-terracotta shrink-0 mt-0.5" />
                     <div>
                       <strong>ANTI-FRAUD ALERT:</strong> This exact document hash already exists in our registry. Duplicate submission will be flagged for investigation.
                     </div>
                   </div>
                 )}
 
-                <button
+                <EditorialButton
                   type="submit"
+                  variant="primary"
+                  size="md"
+                  className="w-full mt-2"
                   disabled={isHashing || !calculatedHash}
-                  className="w-full py-2.5 px-4 bg-[#1F302B] text-white font-bold rounded-xl shadow-[2px_2px_0_#BD5338] hover:bg-[#2C4A3E] transition-all disabled:opacity-50"
                 >
                   Submit Deed for Cryptographic Audit
-                </button>
+                </EditorialButton>
               </div>
             </form>
           </div>
 
           {/* Registry & Audit Table (7 Cols) */}
           <div className="lg:col-span-7">
-            <div className="bg-white border-2 border-[#1F302B] rounded-2xl p-6 shadow-[4px_4px_0_#1F302B]">
-              <div className="flex items-center justify-between pb-3 mb-4 border-b border-stone-200">
+            <div className="bg-surface border border-hairline rounded-3xl p-6 sm:p-8 shadow-card">
+              <div className="flex items-center justify-between pb-4 mb-6 border-b border-hairline">
                 <div>
-                  <h2 className="text-lg font-serif font-bold text-stone-900">
+                  <h2 className="text-lg font-display font-bold text-ink-primary">
                     Municipal Title Deed Audit Registry
                   </h2>
-                  <p className="text-[11px] text-stone-500">
+                  <p className="text-xs text-ink-secondary mt-0.5">
                     Live verification status across Dhaka properties
                   </p>
                 </div>
-                <span className="text-xs font-mono font-bold px-2.5 py-1 bg-stone-100 rounded-md text-stone-700">
-                  {registry.length} DEEDS RECORDED
-                </span>
+                <GlassBadge variant="neutral">
+                  {registry.length} Deeds Recorded
+                </GlassBadge>
               </div>
 
               <div className="space-y-4">
@@ -410,66 +429,58 @@ export default function LandlordVerifyPage() {
                   return (
                     <div
                       key={record.id}
-                      className={`p-4 rounded-xl border-2 transition-all ${
+                      className={`p-5 rounded-2xl border transition-all ${
                         isApproved
-                          ? "bg-emerald-50/50 border-emerald-300"
+                          ? "bg-forest-light/30 border-forest/20 shadow-subtle"
                           : isFlagged
-                          ? "bg-red-50/60 border-red-300"
-                          : "bg-[#FAF8F5] border-stone-300"
+                          ? "bg-terracotta-light/30 border-terracotta/20 shadow-subtle"
+                          : "bg-surface border-hairline shadow-subtle"
                       }`}
                     >
-                      <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+                      <div className="flex flex-wrap items-start justify-between gap-3 mb-2.5">
                         <div>
-                          <div className="flex items-center gap-1.5">
-                            <span className="font-bold text-stone-900 text-sm">
+                          <div className="flex items-center gap-2">
+                            <span className="font-display font-bold text-ink-primary text-base">
                               {record.propertyTitle}
                             </span>
                             {record.trustBadgeConferred && (
-                              <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-emerald-800 text-white">
-                                <ShieldCheck className="w-3 h-3" /> VERIFIED LESSOR
-                              </span>
+                              <GlassBadge variant="forest">
+                                <ShieldCheck className="w-3.5 h-3.5" /> Verified Lessor
+                              </GlassBadge>
                             )}
                           </div>
-                          <p className="text-xs text-stone-600">
-                            Owner: <strong>{record.landlordName}</strong> ({record.thana}) • {record.holdingNumber}
+                          <p className="text-xs text-ink-secondary mt-0.5">
+                            Owner: <strong className="text-ink-primary">{record.landlordName}</strong> ({record.thana}) • {record.holdingNumber}
                           </p>
                         </div>
 
                         {/* Status Badge */}
                         <div>
-                          <span
-                            className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase border ${
-                              isApproved
-                                ? "bg-emerald-100 text-emerald-900 border-emerald-300"
-                                : isFlagged
-                                ? "bg-red-100 text-red-900 border-red-300"
-                                : "bg-amber-100 text-amber-900 border-amber-300"
-                            }`}
-                          >
+                          <GlassBadge variant={isApproved ? "forest" : isFlagged ? "terracotta" : "neutral"}>
                             {record.auditStatus.replace("_", " ")}
-                          </span>
+                          </GlassBadge>
                         </div>
                       </div>
 
-                      <div className="text-xs text-stone-700 bg-white p-2.5 rounded-lg border border-stone-200/80 space-y-1 mb-2">
+                      <div className="text-xs text-ink-secondary bg-muted-sand/40 p-3.5 rounded-xl border border-hairline space-y-1.5 mb-3">
                         <div className="flex items-center justify-between text-[11px]">
-                          <span className="text-stone-500">Doc Category:</span>
-                          <span className="font-semibold">{DOCUMENT_TYPE_LABELS[record.documentType]}</span>
+                          <span>Document Category:</span>
+                          <span className="font-semibold text-ink-primary">{DOCUMENT_TYPE_LABELS[record.documentType]}</span>
                         </div>
                         <div className="flex items-center justify-between text-[11px]">
-                          <span className="text-stone-500">File Name:</span>
-                          <span className="font-mono text-stone-800">{record.fileName}</span>
+                          <span>File Name:</span>
+                          <span className="font-sans text-ink-primary">{record.fileName}</span>
                         </div>
-                        <div className="flex items-center justify-between text-[10px] font-mono">
-                          <span className="text-stone-500">SHA-256 Digest:</span>
+                        <div className="flex items-center justify-between text-[10px]">
+                          <span>SHA-256 Digest:</span>
                           <button
                             type="button"
                             onClick={() => copyHash(record.sha256Hash)}
-                            className="text-stone-700 hover:text-stone-900 flex items-center gap-1 font-bold"
+                            className="text-forest hover:text-forest-hover flex items-center gap-1 font-semibold"
                           >
-                            <span>{record.sha256Hash.slice(0, 14)}...</span>
+                            <span className="font-mono">{record.sha256Hash.slice(0, 14)}...</span>
                             {copiedHash === record.sha256Hash ? (
-                              <Check className="w-3 h-3 text-emerald-600" />
+                              <Check className="w-3 h-3 text-forest" />
                             ) : (
                               <Copy className="w-3 h-3" />
                             )}
@@ -478,27 +489,23 @@ export default function LandlordVerifyPage() {
                       </div>
 
                       {record.auditorNotes && (
-                        <p className="text-[11px] text-stone-600 italic">
+                        <p className="text-[11px] text-ink-secondary italic mb-3">
                           <strong>Note:</strong> {record.auditorNotes}
                         </p>
                       )}
 
                       {/* Admin Demo Control Toggle */}
-                      <div className="mt-3 pt-2 border-t border-stone-200 flex items-center justify-between">
-                        <span className="text-[10px] text-stone-400 font-mono">
-                          ID: {record.id}
+                      <div className="pt-3 border-t border-hairline flex items-center justify-between">
+                        <span className="text-[10px] text-ink-tertiary">
+                          Reference ID: {record.id}
                         </span>
-                        <button
-                          type="button"
+                        <EditorialButton
+                          variant={isApproved ? "outline" : "primary"}
+                          size="sm"
                           onClick={() => handleAdminApproveToggle(record.id)}
-                          className={`text-xs font-bold px-3 py-1 rounded-lg border transition-all ${
-                            isApproved
-                              ? "bg-stone-200 text-stone-700 hover:bg-stone-300 border-stone-300"
-                              : "bg-emerald-700 text-white hover:bg-emerald-800 border-emerald-800"
-                          }`}
                         >
                           {isApproved ? "Revoke Verification" : "Simulate Admin Verification"}
-                        </button>
+                        </EditorialButton>
                       </div>
                     </div>
                   );
@@ -510,9 +517,9 @@ export default function LandlordVerifyPage() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto border-t-2 border-[#1F302B] bg-white py-6">
-        <div className="max-w-7xl mx-auto px-4 text-center text-xs text-stone-500 font-mono">
-          RentPulse Phase 4 // Landlord Anti-Fraud Gate • SHA-256 Cryptographic Digest & Municipal Registry Verification
+      <footer className="mt-auto border-t border-hairline bg-surface py-8">
+        <div className="max-w-[1720px] mx-auto px-6 text-center text-xs text-ink-tertiary">
+          RentPulse // Landlord Anti-Fraud Gate • SHA-256 Cryptographic Digest & Municipal Registry Verification
         </div>
       </footer>
     </div>

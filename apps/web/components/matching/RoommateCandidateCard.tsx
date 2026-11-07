@@ -3,13 +3,14 @@
 import React, { useState } from "react";
 import { SynergyMatchResult } from "@/lib/matching";
 import { SynergyRadarChart } from "./SynergyRadarChart";
+import { GlassBadge } from "@/components/ui/GlassBadge";
+import { EditorialButton } from "@/components/ui/EditorialButton";
 import {
   Sparkles,
   CheckCircle,
   AlertTriangle,
   Building2,
   MapPin,
-  Calendar,
   MessageCircle,
   ChevronDown,
   ChevronUp,
@@ -31,39 +32,34 @@ export function RoommateCandidateCard({
   const [isConnected, setIsConnected] = useState(false);
   const { candidate, overallSynergyScore, tier, strengths, watchOuts, radarPoints } = match;
 
-  const handleConnect = () => {
+  const handleConnect = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsConnected(true);
     if (onConnectRequest) onConnectRequest(candidate.id);
   };
 
-  // Badge background styling
   const isHighSynergy = overallSynergyScore >= 85;
-  const badgeBg = isHighSynergy
-    ? "bg-emerald-100 text-emerald-900 border-emerald-300"
-    : overallSynergyScore >= 70
-    ? "bg-blue-100 text-blue-900 border-blue-300"
-    : "bg-amber-100 text-amber-900 border-amber-300";
 
   return (
-    <div className="bg-[#FAF8F5] border-2 border-[#1F302B] rounded-2xl overflow-hidden shadow-[4px_4px_0_#1F302B] transition-all hover:-translate-y-0.5">
-      {/* Top Banner with Synergy Score */}
-      <div className="flex items-center justify-between px-5 py-3 bg-white border-b border-stone-200">
-        <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-full bg-[#1F302B] text-amber-300 flex items-center justify-center font-bold text-sm font-serif">
+    <article className="group flex flex-col bg-surface rounded-3xl border border-hairline overflow-hidden shadow-card hover:shadow-hover hover:-translate-y-1 transition-all duration-300">
+      {/* Top Header Row with Avatar & Synergy Badge */}
+      <div className="flex items-start justify-between p-6 pb-4 border-b border-hairline">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl bg-forest-light text-forest flex items-center justify-center font-display font-bold text-lg shadow-sm border border-forest/15">
             {candidate.name.charAt(0)}
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <h3 className="font-serif font-bold text-stone-900 text-base leading-tight">
+              <h3 className="font-display font-bold text-ink-primary text-base sm:text-lg leading-tight group-hover:text-forest transition-colors">
                 {candidate.name}
               </h3>
               {candidate.verifiedStudentOrEmployee && (
-                <span title="Verified Student or Employee NID">
-                  <ShieldCheck className="w-4 h-4 text-emerald-700" />
+                <span title="Verified Student or Corporate NID">
+                  <ShieldCheck className="w-4 h-4 text-forest" />
                 </span>
               )}
             </div>
-            <p className="text-[11px] text-stone-500 font-medium">
+            <p className="text-xs text-ink-secondary mt-0.5 font-medium">
               {candidate.occupation}
             </p>
           </div>
@@ -71,80 +67,88 @@ export function RoommateCandidateCard({
 
         {/* Dynamic Synergy Badge */}
         <div className="flex flex-col items-end">
-          <div className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-mono font-bold border ${badgeBg}`}>
-            <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
+          <GlassBadge variant={isHighSynergy ? "forest" : overallSynergyScore >= 70 ? "neutral" : "terracotta"}>
+            <Sparkles className="w-3.5 h-3.5" />
             <span>{overallSynergyScore}% SYNERGY</span>
-          </div>
-          <span className="text-[9px] font-mono uppercase tracking-wider text-stone-500 mt-0.5 font-semibold">
+          </GlassBadge>
+          <span className="text-[10px] font-sans text-ink-tertiary mt-1 font-medium">
             {tier}
           </span>
         </div>
       </div>
 
       {/* Main Body */}
-      <div className="p-5">
-        {/* Institutional & Neighborhood Details */}
-        <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs text-stone-600 mb-3 pb-3 border-b border-stone-200/80">
-          <div className="flex items-center gap-1">
-            <Building2 className="w-3.5 h-3.5 text-stone-400" />
-            <span className="font-medium">{candidate.institutionOrCompany}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <MapPin className="w-3.5 h-3.5 text-[#BD5338]" />
-            <span>{candidate.preferredNeighborhood}</span>
-          </div>
-          <div className="flex items-center gap-1 ml-auto">
-            <span className="text-stone-400">Budget:</span>
-            <span className="font-mono font-bold text-stone-900">
-              ৳{candidate.budgetMonthlyBdt.toLocaleString()}
-            </span>
-            <span className="text-[10px] text-stone-500">/mo</span>
-          </div>
-        </div>
-
-        {/* Bio quote */}
-        <p className="text-xs text-stone-700 leading-relaxed mb-4 italic bg-white/70 p-3 rounded-xl border border-stone-200/60">
-          "{candidate.bio}"
-        </p>
-
-        {/* Behavioral Highlights (Strengths & Watch-outs) */}
-        <div className="space-y-1.5 mb-4">
-          {strengths.slice(0, 2).map((str, idx) => (
-            <div key={`str-${idx}`} className="flex items-start gap-1.5 text-xs text-emerald-900 bg-emerald-50/90 px-2.5 py-1.5 rounded-lg border border-emerald-200/50">
-              <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-              <span>{str}</span>
+      <div className="p-6 flex-1 flex flex-col justify-between">
+        <div>
+          {/* Institutional & Neighborhood Details */}
+          <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs text-ink-secondary mb-4 pb-3 border-b border-hairline">
+            <div className="flex items-center gap-1.5">
+              <Building2 className="w-3.5 h-3.5 text-ink-tertiary" />
+              <span className="font-medium text-ink-primary">{candidate.institutionOrCompany}</span>
             </div>
-          ))}
-          {watchOuts.slice(0, 1).map((wo, idx) => (
-            <div key={`wo-${idx}`} className="flex items-start gap-1.5 text-xs text-amber-900 bg-amber-50/90 px-2.5 py-1.5 rounded-lg border border-amber-200/50">
-              <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
-              <span>{wo}</span>
+            <div className="flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-terracotta" />
+              <span>{candidate.preferredNeighborhood}</span>
             </div>
-          ))}
+            <div className="flex items-center gap-1 ml-auto">
+              <span className="text-ink-tertiary">Budget:</span>
+              <span className="font-sans font-bold text-ink-primary">
+                ৳{candidate.budgetMonthlyBdt.toLocaleString()}
+              </span>
+              <span className="text-[10px] text-ink-tertiary">/mo</span>
+            </div>
+          </div>
+
+          {/* Bio statement */}
+          <p className="text-xs text-ink-secondary leading-relaxed mb-5 italic bg-muted-sand/40 p-3.5 rounded-2xl border border-hairline">
+            "{candidate.bio}"
+          </p>
+
+          {/* Behavioral Compatibility Highlights */}
+          <div className="space-y-2 mb-5">
+            {strengths.slice(0, 2).map((str, idx) => (
+              <div
+                key={`str-${idx}`}
+                className="flex items-start gap-2 text-xs text-forest bg-forest-light/60 px-3 py-2 rounded-xl border border-forest/15"
+              >
+                <CheckCircle className="w-3.5 h-3.5 text-forest shrink-0 mt-0.5" />
+                <span className="leading-tight">{str}</span>
+              </div>
+            ))}
+            {watchOuts.slice(0, 1).map((wo, idx) => (
+              <div
+                key={`wo-${idx}`}
+                className="flex items-start gap-2 text-xs text-terracotta bg-terracotta-light/60 px-3 py-2 rounded-xl border border-terracotta/15"
+              >
+                <AlertTriangle className="w-3.5 h-3.5 text-terracotta shrink-0 mt-0.5" />
+                <span className="leading-tight">{wo}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Collapsible 5-Axis Radar Chart */}
-        <div className="pt-2 border-t border-stone-200">
+        <div className="pt-3 border-t border-hairline">
           <button
             type="button"
             onClick={() => setShowRadarModal(!showRadarModal)}
-            className="flex items-center justify-between w-full py-2 text-xs font-bold text-[#1F302B] hover:text-[#BD5338] transition-colors"
+            className="flex items-center justify-between w-full py-1 text-xs font-semibold text-ink-primary hover:text-forest transition-colors"
           >
-            <span className="flex items-center gap-1.5">
-              <span>📊 5-Axis Cohabitation Radar Visualizer</span>
-              <span className="text-[10px] font-mono px-1.5 py-0.5 bg-stone-200 rounded text-stone-700">
-                SVG Engine
+            <span className="flex items-center gap-2">
+              <span>5-Axis Cohabitation Radar Visualizer</span>
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-muted-sand text-ink-secondary font-medium border border-hairline">
+                Interactive SVG
               </span>
             </span>
             {showRadarModal ? (
-              <ChevronUp className="w-4 h-4" />
+              <ChevronUp className="w-4 h-4 text-ink-tertiary" />
             ) : (
-              <ChevronDown className="w-4 h-4" />
+              <ChevronDown className="w-4 h-4 text-ink-tertiary" />
             )}
           </button>
 
           {showRadarModal && (
-            <div className="mt-3 p-4 bg-white rounded-xl border border-stone-200">
+            <div className="mt-4 p-4 bg-muted-sand/30 rounded-2xl border border-hairline animate-fade-in">
               <SynergyRadarChart
                 radarPoints={radarPoints}
                 userName={userName}
@@ -157,36 +161,32 @@ export function RoommateCandidateCard({
       </div>
 
       {/* Card Actions Footer */}
-      <div className="flex items-center justify-between px-5 py-3 bg-stone-100/80 border-t border-stone-200">
-        <div className="flex items-center gap-1 text-[11px] text-stone-500 font-mono">
-          <span>Diet: <strong className="text-stone-800 uppercase">{candidate.dietaryPreference}</strong></span>
+      <div className="flex items-center justify-between px-6 py-4 bg-muted-sand/30 border-t border-hairline">
+        <div className="flex items-center gap-2 text-[11px] text-ink-tertiary font-sans">
+          <span>Diet: <strong className="text-ink-primary uppercase">{candidate.dietaryPreference}</strong></span>
           <span>•</span>
-          <span>{candidate.smokingPolicy === "strictly_non_smoking" ? "Smoke-Free" : "Balcony OK"}</span>
+          <span>{candidate.smokingPolicy === "strictly_non_smoking" ? "100% Smoke-Free" : "Balcony OK"}</span>
         </div>
 
-        <button
-          type="button"
+        <EditorialButton
+          variant={isConnected ? "outline" : "primary"}
+          size="sm"
           onClick={handleConnect}
           disabled={isConnected}
-          className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-            isConnected
-              ? "bg-emerald-700 text-white cursor-default"
-              : "bg-[#1F302B] text-white hover:bg-[#2C4A3E] shadow-[2px_2px_0_#BD5338]"
-          }`}
         >
           {isConnected ? (
             <>
-              <CheckCircle className="w-3.5 h-3.5" />
-              <span>Intro Sent</span>
+              <CheckCircle className="w-3.5 h-3.5 text-forest" />
+              <span className="text-forest font-semibold">Intro Sent</span>
             </>
           ) : (
             <>
-              <MessageCircle className="w-3.5 h-3.5 text-amber-300" />
-              <span>Connect Roommate</span>
+              <MessageCircle className="w-3.5 h-3.5" />
+              <span>Connect</span>
             </>
           )}
-        </button>
+        </EditorialButton>
       </div>
-    </div>
+    </article>
   );
 }

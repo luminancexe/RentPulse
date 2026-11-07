@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { RadarPoint, RADAR_AXES } from "@/lib/matching";
+import { RadarPoint } from "@/lib/matching";
 
 interface SynergyRadarChartProps {
   radarPoints: RadarPoint[];
@@ -24,7 +24,7 @@ export function SynergyRadarChart({
   const maxRadius = 100;
   const numAxes = 5;
 
-  // Compute background concentric pentagon rings at 20%, 40%, 60%, 80%, 100%
+  // Concentric pentagon rings
   const gridLevels = [0.2, 0.4, 0.6, 0.8, 1.0];
 
   const gridPolygons = gridLevels.map((lvl) => {
@@ -39,7 +39,7 @@ export function SynergyRadarChart({
     return pts.join(" ");
   });
 
-  // Calculate polygon points for Candidate
+  // Calculate polygon points for Candidate (Terracotta #BD5338)
   const candidatePolygon = radarPoints
     .map((p) => {
       const angle = -Math.PI / 2 + (radarPoints.indexOf(p) * 2 * Math.PI) / numAxes;
@@ -48,7 +48,7 @@ export function SynergyRadarChart({
     })
     .join(" ");
 
-  // Calculate polygon points for User
+  // Calculate polygon points for User (Forest #2C4A3E)
   const userPolygon = radarPoints
     .map((p) => {
       const angle = -Math.PI / 2 + (radarPoints.indexOf(p) * 2 * Math.PI) / numAxes;
@@ -58,23 +58,23 @@ export function SynergyRadarChart({
     .join(" ");
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center select-none">
       <div className="relative" style={{ width: size, height: size }}>
         <svg
           viewBox="0 0 320 320"
-          className="w-full h-full overflow-visible select-none"
+          className="w-full h-full overflow-visible"
         >
-          {/* Subtle Circular Glow */}
-          <circle cx={center} cy={center} r={maxRadius} fill="#FAF8F5" />
+          {/* Subtle Circular Canvas Surface */}
+          <circle cx={center} cy={center} r={maxRadius + 4} fill="#F9F6F0" opacity={0.6} />
 
           {/* Concentric Pentagon Webs */}
           {gridPolygons.map((pts, idx) => (
             <polygon
               key={`web-${idx}`}
               points={pts}
-              fill={idx % 2 === 0 ? "rgba(31, 48, 43, 0.02)" : "transparent"}
-              stroke="rgba(28, 26, 23, 0.12)"
-              strokeWidth={idx === gridPolygons.length - 1 ? "1.5" : "0.75"}
+              fill={idx % 2 === 0 ? "rgba(44, 74, 62, 0.02)" : "transparent"}
+              stroke="rgba(28, 26, 23, 0.10)"
+              strokeWidth={idx === gridPolygons.length - 1 ? "1.2" : "0.7"}
               strokeDasharray={idx === gridPolygons.length - 1 ? undefined : "3 3"}
             />
           ))}
@@ -87,40 +87,39 @@ export function SynergyRadarChart({
             const isHovered = hoveredAxis === p.axis;
 
             return (
-              <g key={`spoke-${idx}`}>
-                <line
-                  x1={center}
-                  y1={center}
-                  x2={x2}
-                  y2={y2}
-                  stroke={isHovered ? "#BD5338" : "rgba(28, 26, 23, 0.18)"}
-                  strokeWidth={isHovered ? "1.8" : "1"}
-                  className="transition-colors duration-150"
-                />
-              </g>
+              <line
+                key={`spoke-${idx}`}
+                x1={center}
+                y1={center}
+                x2={x2}
+                y2={y2}
+                stroke={isHovered ? "#BD5338" : "rgba(28, 26, 23, 0.12)"}
+                strokeWidth={isHovered ? "1.5" : "0.8"}
+                className="transition-colors duration-200"
+              />
             );
           })}
 
-          {/* User Polygon (Forest Green fill) */}
+          {/* User Polygon (Forest #2C4A3E) */}
           <polygon
             points={userPolygon}
-            fill="rgba(31, 48, 43, 0.22)"
-            stroke="#1F302B"
-            strokeWidth="2"
+            fill="rgba(44, 74, 62, 0.20)"
+            stroke="#2C4A3E"
+            strokeWidth="1.8"
             strokeDasharray="4 2"
             className="transition-all duration-300"
           />
 
-          {/* Candidate Polygon (Terracotta fill) */}
+          {/* Candidate Polygon (Terracotta #BD5338) */}
           <polygon
             points={candidatePolygon}
-            fill="rgba(189, 83, 56, 0.32)"
+            fill="rgba(189, 83, 56, 0.25)"
             stroke="#BD5338"
-            strokeWidth="2.2"
+            strokeWidth="2"
             className="transition-all duration-300"
           />
 
-          {/* Interactive Vertex Dots */}
+          {/* Vertex Dots */}
           {radarPoints.map((p, idx) => {
             const angle = -Math.PI / 2 + (idx * 2 * Math.PI) / numAxes;
             const rU = (p.userValue / 5) * maxRadius;
@@ -132,20 +131,18 @@ export function SynergyRadarChart({
 
             return (
               <g key={`dots-${idx}`}>
-                {/* User Dot */}
                 <circle
                   cx={xU}
                   cy={yU}
-                  r={3.5}
-                  fill="#1F302B"
+                  r={3}
+                  fill="#2C4A3E"
                   stroke="#FFFFFF"
                   strokeWidth="1.5"
                 />
-                {/* Candidate Dot */}
                 <circle
                   cx={xC}
                   cy={yC}
-                  r={4.5}
+                  r={4}
                   fill="#BD5338"
                   stroke="#FFFFFF"
                   strokeWidth="1.5"
@@ -154,10 +151,10 @@ export function SynergyRadarChart({
             );
           })}
 
-          {/* Axis Labels Around Outer Perimeter */}
+          {/* Perimeter Labels */}
           {radarPoints.map((p, idx) => {
             const angle = -Math.PI / 2 + (idx * 2 * Math.PI) / numAxes;
-            const labelRadius = maxRadius + 24;
+            const labelRadius = maxRadius + 22;
             const xL = center + labelRadius * Math.cos(angle);
             const yL = center + labelRadius * Math.sin(angle);
             const isHovered = hoveredAxis === p.axis;
@@ -179,11 +176,11 @@ export function SynergyRadarChart({
                   textAnchor={textAnchor}
                   dominantBaseline="central"
                   fontSize="10"
-                  fontWeight={isHovered ? "700" : "600"}
-                  fill={isHovered ? "#BD5338" : "#1C1A17"}
-                  className="transition-colors duration-150 font-sans tracking-wide"
+                  fontWeight={isHovered ? "600" : "500"}
+                  fill={isHovered ? "#BD5338" : "#736B64"}
+                  className="transition-colors duration-150 font-sans tracking-tight"
                 >
-                  {p.label} ({p.candidateValue}/5)
+                  {p.label} <tspan fill="#1C1A17" fontWeight="600">({p.candidateValue}/5)</tspan>
                 </text>
               </g>
             );
@@ -191,43 +188,43 @@ export function SynergyRadarChart({
         </svg>
       </div>
 
-      {/* Legend & Sync Metric */}
-      <div className="flex items-center justify-center gap-6 mt-2 text-xs font-medium text-stone-700">
+      {/* Legend */}
+      <div className="flex items-center justify-center gap-6 mt-1 text-xs text-ink-secondary font-medium">
         <div className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#1F302B] ring-2 ring-stone-200" />
+          <span className="w-2.5 h-2.5 rounded-full bg-forest ring-2 ring-forest-light" />
           <span>{userName}</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#BD5338] ring-2 ring-orange-200" />
+          <span className="w-2.5 h-2.5 rounded-full bg-terracotta ring-2 ring-terracotta-light" />
           <span>{candidateName}</span>
         </div>
       </div>
 
-      {/* Dimension Delta Metrics */}
+      {/* Dimension Delta Badges */}
       {showDeltas && (
-        <div className="grid grid-cols-5 gap-1.5 w-full mt-4 pt-3 border-t border-stone-200/80 text-center">
+        <div className="grid grid-cols-5 gap-2 w-full mt-4 pt-3 border-t border-hairline text-center">
           {radarPoints.map((p, idx) => {
             const delta = p.delta;
             const isMatch = delta <= 1;
             return (
               <div
                 key={`metric-${idx}`}
-                className={`py-1.5 px-1 rounded-md text-[10px] transition-all ${
+                className={`py-2 px-1 rounded-xl text-[10px] transition-all border ${
                   hoveredAxis === p.axis
-                    ? "bg-amber-100/70 ring-1 ring-amber-300"
+                    ? "bg-terracotta-light border-terracotta/30 text-terracotta"
                     : isMatch
-                    ? "bg-emerald-50 text-emerald-900 border border-emerald-200/60"
-                    : "bg-stone-50 text-stone-600 border border-stone-200"
+                    ? "bg-forest-light/60 text-forest border-forest/15"
+                    : "bg-muted-sand/50 text-ink-secondary border-hairline"
                 }`}
                 onMouseEnter={() => setHoveredAxis(p.axis)}
                 onMouseLeave={() => setHoveredAxis(null)}
               >
-                <div className="font-semibold truncate">{p.label}</div>
-                <div className="text-[11px] font-bold mt-0.5">
+                <div className="font-medium truncate text-ink-primary">{p.label}</div>
+                <div className="text-[11px] font-semibold mt-0.5 text-ink-primary">
                   {p.userValue} vs {p.candidateValue}
                 </div>
-                <div className={`text-[9px] font-mono ${delta === 0 ? "text-emerald-700 font-bold" : delta <= 1 ? "text-emerald-600" : "text-amber-700"}`}>
-                  {delta === 0 ? "✓ EXACT" : delta === 1 ? "±1 CLOSE" : `Δ ${delta}`}
+                <div className={`text-[9px] font-sans font-medium mt-0.5 ${delta === 0 ? "text-forest font-semibold" : delta <= 1 ? "text-forest" : "text-terracotta"}`}>
+                  {delta === 0 ? "✓ Synchronized" : delta === 1 ? "±1 Compatible" : `Δ ${delta} Shift`}
                 </div>
               </div>
             );

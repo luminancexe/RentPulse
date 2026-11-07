@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   DHAKA_ROOMMATE_CANDIDATES,
   DEFAULT_USER_PROFILE,
@@ -13,6 +14,9 @@ import {
   CohabitationQuiz,
   RoommateCandidateCard,
 } from "@/components/matching";
+import { PillChip } from "@/components/ui/PillChip";
+import { GlassBadge } from "@/components/ui/GlassBadge";
+import { EditorialButton } from "@/components/ui/EditorialButton";
 import {
   Sparkles,
   SlidersHorizontal,
@@ -20,9 +24,9 @@ import {
   Users,
   ShieldCheck,
   FileText,
-  Search,
   CheckCircle2,
-  Filter,
+  ChevronLeft,
+  X,
 } from "lucide-react";
 
 export default function RoommatesPage() {
@@ -79,135 +83,150 @@ export default function RoommatesPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#1C1A17] flex flex-col font-sans">
-      {/* Top Editorial Navigation */}
-      <header className="sticky top-0 z-40 bg-[#FAF8F5]/90 backdrop-blur-md border-b-2 border-[#1F302B]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className="w-8 h-8 rounded-lg bg-[#1F302B] text-amber-300 flex items-center justify-center font-serif font-black text-lg shadow-[2px_2px_0_#BD5338]">
-                R
-              </span>
-              <span className="font-serif font-bold text-xl tracking-tight text-[#1F302B]">
+    <div className="min-h-screen bg-canvas text-ink-primary flex flex-col font-sans">
+      {/* Editorial Boutique Navigation Bar */}
+      <header className="sticky top-0 z-40 bg-surface/90 backdrop-blur-md border-b border-hairline">
+        <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 h-20 sm:h-22 flex items-center justify-between gap-6">
+          {/* Logo & Back button */}
+          <div className="flex items-center gap-5 shrink-0">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 text-xs text-ink-secondary hover:text-ink-primary font-medium transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span className="hidden sm:inline">Home</span>
+            </Link>
+
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-forest flex items-center justify-center p-1.5 text-canvas shadow-subtle shrink-0">
+                <Image src="/logo.png" alt="RentPulse" width={26} height={26} className="brightness-200" />
+              </div>
+              <span className="font-editorial text-2xl font-bold tracking-tight text-ink-primary">
                 RentPulse
               </span>
             </Link>
-
-            <nav className="hidden md:flex items-center gap-1 text-xs font-semibold">
-              <Link
-                href="/properties"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-stone-600 hover:text-stone-900 hover:bg-stone-200/60 transition-colors"
-              >
-                <Home className="w-3.5 h-3.5" />
-                Discovery Feed
-              </Link>
-              <Link
-                href="/roommates"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#1F302B] text-white font-bold"
-              >
-                <Users className="w-3.5 h-3.5 text-amber-300" />
-                Roommate Synergy
-              </Link>
-              <Link
-                href="/dossier"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-stone-600 hover:text-stone-900 hover:bg-stone-200/60 transition-colors"
-              >
-                <ShieldCheck className="w-3.5 h-3.5" />
-                Tenancy Dossier
-              </Link>
-              <Link
-                href="/landlord/verify"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-stone-600 hover:text-stone-900 hover:bg-stone-200/60 transition-colors"
-              >
-                <FileText className="w-3.5 h-3.5" />
-                Deed Anti-Fraud
-              </Link>
-            </nav>
           </div>
 
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsQuizOpen(!isQuizOpen)}
-              className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-bold text-white bg-[#BD5338] hover:bg-[#a6452d] border border-[#1F302B] shadow-[2px_2px_0_#1F302B] transition-all"
+          {/* Central Subsystem Navigation Pill Links */}
+          <nav className="hidden md:flex items-center gap-1.5 p-1 rounded-full bg-muted-sand/70 border border-hairline shadow-subtle">
+            <Link
+              href="/properties"
+              className="px-4 py-2 rounded-full text-xs font-medium text-ink-secondary hover:text-ink-primary transition-colors flex items-center gap-1.5"
             >
-              <SlidersHorizontal className="w-3.5 h-3.5 text-amber-200" />
-              <span>{isQuizOpen ? "Close Quiz" : "Edit My 5 Habits"}</span>
-            </button>
+              <Home className="w-3.5 h-3.5" />
+              <span>Discovery Feed</span>
+            </Link>
+            <Link
+              href="/roommates"
+              className="px-4 py-2 rounded-full text-xs font-semibold bg-surface text-ink-primary shadow-subtle border border-hairline flex items-center gap-1.5"
+            >
+              <Users className="w-3.5 h-3.5 text-forest" />
+              <span>Roommate Synergy</span>
+            </Link>
+            <Link
+              href="/dossier"
+              className="px-4 py-2 rounded-full text-xs font-medium text-ink-secondary hover:text-ink-primary transition-colors flex items-center gap-1.5"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Tenancy Dossier</span>
+            </Link>
+            <Link
+              href="/landlord/verify"
+              className="px-4 py-2 rounded-full text-xs font-medium text-ink-secondary hover:text-ink-primary transition-colors flex items-center gap-1.5"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>Deed Anti-Fraud</span>
+            </Link>
+          </nav>
+
+          {/* Right Action */}
+          <div className="flex items-center gap-3 shrink-0">
+            <EditorialButton
+              variant={isQuizOpen ? "outline" : "primary"}
+              size="sm"
+              onClick={() => setIsQuizOpen(!isQuizOpen)}
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5" />
+              <span>{isQuizOpen ? "Close Assessment" : "Edit My 5 Habits"}</span>
+            </EditorialButton>
           </div>
         </div>
       </header>
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <main className="flex-1 max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 py-8 sm:py-10 w-full">
         {/* Notifications Toast */}
         {connectionNotifs.length > 0 && (
           <div className="mb-6 space-y-2">
             {connectionNotifs.map((msg, idx) => (
               <div
                 key={`notif-${idx}`}
-                className="flex items-center justify-between p-3 rounded-xl bg-emerald-50 border-2 border-emerald-600 text-emerald-950 text-xs font-medium shadow-[2px_2px_0_#1F302B] animate-fade-in"
+                className="flex items-center justify-between p-4 rounded-2xl bg-forest-light border border-forest/20 text-forest text-xs font-medium shadow-card animate-fade-in"
               >
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <div className="flex items-center gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-forest shrink-0" />
                   <span>{msg}</span>
                 </div>
                 <button
-                  onClick={() => setConnectionNotifs(prev => prev.filter((_, i) => i !== idx))}
-                  className="text-stone-400 hover:text-stone-700 font-bold ml-2"
+                  onClick={() => setConnectionNotifs((prev) => prev.filter((_, i) => i !== idx))}
+                  className="text-forest/60 hover:text-forest font-bold ml-2 p-1"
                 >
-                  ✕
+                  <X className="w-4 h-4" />
                 </button>
               </div>
             ))}
           </div>
         )}
 
-        {/* Hero Header */}
-        <div className="mb-8 bg-white border-2 border-[#1F302B] rounded-2xl p-6 sm:p-8 shadow-[4px_4px_0_#1F302B]">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+        {/* Hero Header Card */}
+        <div className="mb-8 bg-surface border border-hairline rounded-3xl p-8 sm:p-10 shadow-card">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
             <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-amber-100 text-amber-900 border border-amber-300 mb-3">
-                <Sparkles className="w-3.5 h-3.5 text-amber-600 fill-amber-500" />
-                <span>PHASE 4 // ALGORITHMIC ROOMMATE SYNERGY ENGINE</span>
+              <div className="flex items-center gap-2 mb-3">
+                <GlassBadge variant="forest">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Roommate Synergy Engine</span>
+                </GlassBadge>
+                <span className="text-xs text-ink-tertiary">Vector Space Model</span>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-serif font-black text-[#1F302B] tracking-tight">
+              <h1 className="text-3xl sm:text-4xl font-display font-bold text-ink-primary tracking-tight">
                 Cohabitation Matching via 5-Axis Vectors
               </h1>
-              <p className="text-sm text-stone-600 mt-2 leading-relaxed">
-                Replace unvetted Facebook group posts with mathematical compatibility. RentPulse models sleep chronotypes, cleaning standards, study noise boundaries, guest policies, and dietary habits using vector cosine similarity.
+              <p className="text-sm text-ink-secondary mt-2.5 leading-relaxed">
+                Replace informal, unvetted social media searches with mathematical cohabitation compatibility. RentPulse models sleep chronotypes, cleaning standards, study noise boundaries, guest rhythms, and dietary culture using vector cosine similarity.
               </p>
             </div>
 
-            {/* Quick Profile Summary Badge */}
-            <div className="p-4 rounded-xl bg-[#FAF8F5] border border-stone-200 flex flex-col gap-2 shrink-0">
-              <div className="text-xs font-mono text-stone-500 uppercase tracking-wider font-semibold">
-                Your Current Vector Profile
+            {/* User Vector Profile Summary */}
+            <div className="p-5 rounded-2xl bg-muted-sand/40 border border-hairline flex flex-col gap-3 shrink-0">
+              <div className="text-xs font-sans text-ink-secondary font-semibold uppercase tracking-wider">
+                Your Current Habit Vector
               </div>
-              <div className="grid grid-cols-5 gap-1.5 text-center">
-                <div className="px-2 py-1 bg-white rounded border border-stone-200">
-                  <div className="text-[9px] text-stone-500">SLEEP</div>
-                  <div className="text-xs font-bold text-stone-900">{userProfile.vector.sleepChronotype}/5</div>
+              <div className="grid grid-cols-5 gap-2 text-center">
+                <div className="px-3 py-1.5 bg-surface rounded-xl border border-hairline shadow-subtle">
+                  <div className="text-[10px] text-ink-tertiary uppercase font-medium">Sleep</div>
+                  <div className="text-sm font-bold text-ink-primary mt-0.5">{userProfile.vector.sleepChronotype}/5</div>
                 </div>
-                <div className="px-2 py-1 bg-white rounded border border-stone-200">
-                  <div className="text-[9px] text-stone-500">CLEAN</div>
-                  <div className="text-xs font-bold text-stone-900">{userProfile.vector.cleanlinessRigor}/5</div>
+                <div className="px-3 py-1.5 bg-surface rounded-xl border border-hairline shadow-subtle">
+                  <div className="text-[10px] text-ink-tertiary uppercase font-medium">Clean</div>
+                  <div className="text-sm font-bold text-ink-primary mt-0.5">{userProfile.vector.cleanlinessRigor}/5</div>
                 </div>
-                <div className="px-2 py-1 bg-white rounded border border-stone-200">
-                  <div className="text-[9px] text-stone-500">NOISE</div>
-                  <div className="text-xs font-bold text-stone-900">{userProfile.vector.noiseTolerance}/5</div>
+                <div className="px-3 py-1.5 bg-surface rounded-xl border border-hairline shadow-subtle">
+                  <div className="text-[10px] text-ink-tertiary uppercase font-medium">Noise</div>
+                  <div className="text-sm font-bold text-ink-primary mt-0.5">{userProfile.vector.noiseTolerance}/5</div>
                 </div>
-                <div className="px-2 py-1 bg-white rounded border border-stone-200">
-                  <div className="text-[9px] text-stone-500">GUEST</div>
-                  <div className="text-xs font-bold text-stone-900">{userProfile.vector.guestRhythm}/5</div>
+                <div className="px-3 py-1.5 bg-surface rounded-xl border border-hairline shadow-subtle">
+                  <div className="text-[10px] text-ink-tertiary uppercase font-medium">Guest</div>
+                  <div className="text-sm font-bold text-ink-primary mt-0.5">{userProfile.vector.guestRhythm}/5</div>
                 </div>
-                <div className="px-2 py-1 bg-white rounded border border-stone-200">
-                  <div className="text-[9px] text-stone-500">HABIT</div>
-                  <div className="text-xs font-bold text-stone-900">{userProfile.vector.lifestyleMindset}/5</div>
+                <div className="px-3 py-1.5 bg-surface rounded-xl border border-hairline shadow-subtle">
+                  <div className="text-[10px] text-ink-tertiary uppercase font-medium">Habit</div>
+                  <div className="text-sm font-bold text-ink-primary mt-0.5">{userProfile.vector.lifestyleMindset}/5</div>
                 </div>
               </div>
               <button
                 onClick={() => setIsQuizOpen(true)}
-                className="mt-1 text-center text-xs font-bold text-[#BD5338] hover:underline"
+                className="mt-1 text-center text-xs font-semibold text-forest hover:text-forest-hover transition-colors"
               >
                 Adjust My Habit Questionnaire →
               </button>
@@ -229,62 +248,60 @@ export default function RoommatesPage() {
         )}
 
         {/* Filter Toolbar */}
-        <div className="bg-white border-2 border-[#1F302B] rounded-2xl p-4 mb-8 shadow-[4px_4px_0_#1F302B] flex flex-wrap items-center justify-between gap-4">
+        <div className="bg-surface border border-hairline rounded-3xl p-5 mb-8 shadow-card flex flex-wrap items-center justify-between gap-4">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-bold text-stone-600 flex items-center gap-1 mr-2">
-              <Filter className="w-3.5 h-3.5" /> Neighborhood:
+            <span className="text-xs font-semibold text-ink-secondary mr-2">
+              Neighborhood:
             </span>
             {neighborhoods.map((nb) => (
-              <button
+              <PillChip
                 key={nb.id}
+                active={selectedNeighborhood === nb.id}
+                variant="forest"
                 onClick={() => setSelectedNeighborhood(nb.id)}
-                className={`px-3 py-1 rounded-full text-xs transition-all ${
-                  selectedNeighborhood === nb.id
-                    ? "bg-[#1F302B] text-white font-bold"
-                    : "bg-stone-100 text-stone-700 hover:bg-stone-200"
-                }`}
               >
                 {nb.label}
-              </button>
+              </PillChip>
             ))}
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-semibold text-stone-700">
-            <label className="flex items-center gap-1.5 cursor-pointer select-none">
+          <div className="flex items-center gap-5 text-xs font-medium text-ink-secondary">
+            <label className="flex items-center gap-2 cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={smokeFreeOnly}
                 onChange={(e) => setSmokeFreeOnly(e.target.checked)}
-                className="rounded text-[#BD5338] focus:ring-[#BD5338]"
+                className="rounded border-hairline text-forest focus:ring-forest"
               />
-              <span>100% Smoke-Free Only</span>
+              <span className="text-ink-primary">100% Smoke-Free</span>
             </label>
 
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-2">
               <span>Min Score:</span>
               <select
                 value={minSynergy}
                 onChange={(e) => setMinSynergy(Number(e.target.value))}
-                className="bg-stone-50 border border-stone-300 rounded px-2 py-1 text-xs font-bold text-stone-900"
+                className="bg-muted-sand/50 border border-hairline rounded-xl px-3 py-1.5 text-xs font-semibold text-ink-primary focus:outline-none focus:border-forest"
               >
                 <option value={0}>All Scores</option>
                 <option value={70}>70%+ (Balanced)</option>
-                <option value={80}>80%+ (Strong)</option>
+                <option value={80}>80%+ (Strong Harmony)</option>
                 <option value={90}>90%+ (Top Synergy)</option>
               </select>
             </div>
           </div>
         </div>
 
-        {/* Candidate Results Grid */}
-        <div className="mb-6 flex items-center justify-between text-xs text-stone-600 font-mono">
+        {/* Results Header */}
+        <div className="mb-6 flex items-center justify-between text-xs text-ink-tertiary font-sans">
           <span>
-            SHOWING <strong>{filteredMatches.length}</strong> COMPATIBLE DHAKA ROOMMATE CANDIDATES
+            SHOWING <strong className="text-ink-primary">{filteredMatches.length}</strong> COMPATIBLE DHAKA ROOMMATE CANDIDATES
           </span>
-          <span>SORTED BY: HIGHEST VECTOR SYNERGY ↓</span>
+          <span>SORTED BY HIGHEST VECTOR SYNERGY</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Candidate Results Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {filteredMatches.map((m) => (
             <RoommateCandidateCard
               key={m.candidate.id}
@@ -296,27 +313,30 @@ export default function RoommatesPage() {
         </div>
 
         {filteredMatches.length === 0 && (
-          <div className="p-12 text-center bg-white border-2 border-dashed border-stone-300 rounded-2xl">
-            <p className="text-base font-bold text-stone-700">No roommate candidates match this filter threshold.</p>
-            <p className="text-xs text-stone-500 mt-1">Try lowering the minimum synergy score or selecting 'All Dhaka Hubs'.</p>
-            <button
-              onClick={() => {
-                setSelectedNeighborhood("all");
-                setMinSynergy(0);
-                setSmokeFreeOnly(false);
-              }}
-              className="mt-4 px-4 py-2 bg-[#1F302B] text-white text-xs font-bold rounded-xl"
-            >
-              Reset Filters
-            </button>
+          <div className="p-16 text-center bg-surface border border-dashed border-hairline rounded-3xl shadow-card">
+            <p className="text-base font-display font-bold text-ink-primary">No roommate candidates match this filter threshold.</p>
+            <p className="text-xs text-ink-secondary mt-1.5">Try lowering the minimum synergy score or selecting 'All Dhaka Hubs'.</p>
+            <div className="mt-5">
+              <EditorialButton
+                variant="primary"
+                size="sm"
+                onClick={() => {
+                  setSelectedNeighborhood("all");
+                  setMinSynergy(0);
+                  setSmokeFreeOnly(false);
+                }}
+              >
+                Reset Filters
+              </EditorialButton>
+            </div>
           </div>
         )}
       </main>
 
       {/* Editorial Footer */}
-      <footer className="mt-auto border-t-2 border-[#1F302B] bg-white py-6">
-        <div className="max-w-7xl mx-auto px-4 text-center text-xs text-stone-500 font-mono">
-          RentPulse Phase 4 // Roommate Synergy Engine • 5-Vector Cosine Similarity & Dynamic SVG Radar Visualizer
+      <footer className="mt-auto border-t border-hairline bg-surface py-8">
+        <div className="max-w-[1720px] mx-auto px-6 text-center text-xs text-ink-tertiary">
+          RentPulse // Roommate Synergy Engine • 5-Vector Cosine Similarity & Dynamic SVG Radar Visualizer
         </div>
       </footer>
     </div>

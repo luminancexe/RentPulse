@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   TenancyDossierData,
   EncryptedVaultEnvelope,
@@ -9,6 +10,8 @@ import {
   encryptDossier,
   decryptDossier,
 } from "@/lib/crypto-vault";
+import { GlassBadge } from "@/components/ui/GlassBadge";
+import { EditorialButton } from "@/components/ui/EditorialButton";
 import {
   ShieldCheck,
   Lock,
@@ -26,6 +29,7 @@ import {
   Users,
   FileText,
   BadgeAlert,
+  ChevronLeft,
 } from "lucide-react";
 
 export default function DossierPage() {
@@ -92,86 +96,99 @@ export default function DossierPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#1C1A17] flex flex-col font-sans">
+    <div className="min-h-screen bg-canvas text-ink-primary flex flex-col font-sans">
       {/* Editorial Navigation */}
-      <header className="sticky top-0 z-40 bg-[#FAF8F5]/90 backdrop-blur-md border-b-2 border-[#1F302B]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className="w-8 h-8 rounded-lg bg-[#1F302B] text-amber-300 flex items-center justify-center font-serif font-black text-lg shadow-[2px_2px_0_#BD5338]">
-                R
-              </span>
-              <span className="font-serif font-bold text-xl tracking-tight text-[#1F302B]">
+      <header className="sticky top-0 z-40 bg-surface/90 backdrop-blur-md border-b border-hairline">
+        <div className="w-full max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 h-20 sm:h-22 flex items-center justify-between gap-6">
+          {/* Logo & Back button */}
+          <div className="flex items-center gap-5 shrink-0">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-1.5 text-xs text-ink-secondary hover:text-ink-primary font-medium transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span className="hidden sm:inline">Home</span>
+            </Link>
+
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-forest flex items-center justify-center p-1.5 text-canvas shadow-subtle shrink-0">
+                <Image src="/logo.png" alt="RentPulse" width={26} height={26} className="brightness-200" />
+              </div>
+              <span className="font-editorial text-2xl font-bold tracking-tight text-ink-primary">
                 RentPulse
               </span>
             </Link>
-
-            <nav className="hidden md:flex items-center gap-1 text-xs font-semibold">
-              <Link
-                href="/properties"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-stone-600 hover:text-stone-900 hover:bg-stone-200/60 transition-colors"
-              >
-                <Home className="w-3.5 h-3.5" />
-                Discovery Feed
-              </Link>
-              <Link
-                href="/roommates"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-stone-600 hover:text-stone-900 hover:bg-stone-200/60 transition-colors"
-              >
-                <Users className="w-3.5 h-3.5" />
-                Roommate Synergy
-              </Link>
-              <Link
-                href="/dossier"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#1F302B] text-white font-bold"
-              >
-                <ShieldCheck className="w-3.5 h-3.5 text-amber-300" />
-                Tenancy Dossier
-              </Link>
-              <Link
-                href="/landlord/verify"
-                className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-stone-600 hover:text-stone-900 hover:bg-stone-200/60 transition-colors"
-              >
-                <FileText className="w-3.5 h-3.5" />
-                Deed Anti-Fraud
-              </Link>
-            </nav>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="px-2.5 py-1 text-[11px] font-mono bg-emerald-100 text-emerald-900 border border-emerald-300 rounded-md font-bold">
-              AES-GCM 256-BIT VAULT
-            </span>
+          {/* Central Subsystem Navigation Pill Links */}
+          <nav className="hidden md:flex items-center gap-1.5 p-1 rounded-full bg-muted-sand/70 border border-hairline shadow-subtle">
+            <Link
+              href="/properties"
+              className="px-4 py-2 rounded-full text-xs font-medium text-ink-secondary hover:text-ink-primary transition-colors flex items-center gap-1.5"
+            >
+              <Home className="w-3.5 h-3.5" />
+              <span>Discovery Feed</span>
+            </Link>
+            <Link
+              href="/roommates"
+              className="px-4 py-2 rounded-full text-xs font-medium text-ink-secondary hover:text-ink-primary transition-colors flex items-center gap-1.5"
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>Roommate Synergy</span>
+            </Link>
+            <Link
+              href="/dossier"
+              className="px-4 py-2 rounded-full text-xs font-semibold bg-surface text-ink-primary shadow-subtle border border-hairline flex items-center gap-1.5"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-forest" />
+              <span>Tenancy Dossier</span>
+            </Link>
+            <Link
+              href="/landlord/verify"
+              className="px-4 py-2 rounded-full text-xs font-medium text-ink-secondary hover:text-ink-primary transition-colors flex items-center gap-1.5"
+            >
+              <FileText className="w-3.5 h-3.5" />
+              <span>Deed Anti-Fraud</span>
+            </Link>
+          </nav>
+
+          <div className="flex items-center gap-3 shrink-0">
+            <GlassBadge variant="forest">
+              AES-GCM 256-Bit Vault
+            </GlassBadge>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+      <main className="flex-1 max-w-[1720px] mx-auto px-6 sm:px-10 lg:px-16 py-8 sm:py-10 w-full">
         {/* Hero Banner */}
-        <div className="mb-8 bg-white border-2 border-[#1F302B] rounded-2xl p-6 sm:p-8 shadow-[4px_4px_0_#1F302B]">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="mb-8 bg-surface border border-hairline rounded-3xl p-8 sm:p-10 shadow-card">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
             <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-emerald-100 text-emerald-900 border border-emerald-300 mb-3">
-                <Lock className="w-3.5 h-3.5 text-emerald-700" />
-                <span>PHASE 4 // ZERO-KNOWLEDGE CLIENT CREDENTIAL VAULT</span>
+              <div className="flex items-center gap-2 mb-3">
+                <GlassBadge variant="forest">
+                  <Lock className="w-3.5 h-3.5" />
+                  <span>Zero-Knowledge Credential Vault</span>
+                </GlassBadge>
+                <span className="text-xs text-ink-tertiary">Phase 4 Security</span>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-serif font-black text-[#1F302B] tracking-tight">
+              <h1 className="text-3xl sm:text-4xl font-display font-bold text-ink-primary tracking-tight">
                 Encrypted Digital Tenancy Dossier
               </h1>
-              <p className="text-sm text-stone-600 mt-2 leading-relaxed">
+              <p className="text-sm text-ink-secondary mt-2.5 leading-relaxed">
                 RentPulse protects tenant identity with client-side cryptography. Your National ID, academic/employment records, and landlord references are encrypted directly in the browser via AES-GCM 256-bit with SHA-256 tamper detection.
               </p>
             </div>
 
-            {/* Tab Switcher */}
-            <div className="flex bg-[#FAF8F5] p-1.5 rounded-xl border-2 border-[#1F302B] self-start md:self-auto shrink-0">
+            {/* Tab Switcher Capsule */}
+            <div className="inline-flex p-1.5 rounded-full bg-muted-sand/70 border border-hairline shadow-subtle self-start md:self-auto shrink-0">
               <button
                 onClick={() => setActiveTab("tenant_builder")}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-medium transition-all ${
                   activeTab === "tenant_builder"
-                    ? "bg-[#1F302B] text-white shadow-[2px_2px_0_#BD5338]"
-                    : "text-stone-700 hover:text-stone-900"
+                    ? "bg-surface text-ink-primary shadow-subtle border border-hairline font-semibold"
+                    : "text-ink-secondary hover:text-ink-primary"
                 }`}
               >
                 <User className="w-3.5 h-3.5" />
@@ -179,10 +196,10 @@ export default function DossierPage() {
               </button>
               <button
                 onClick={() => setActiveTab("landlord_inspector")}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-all ${
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-medium transition-all ${
                   activeTab === "landlord_inspector"
-                    ? "bg-[#BD5338] text-white shadow-[2px_2px_0_#1F302B]"
-                    : "text-stone-700 hover:text-stone-900"
+                    ? "bg-surface text-ink-primary shadow-subtle border border-hairline font-semibold"
+                    : "text-ink-secondary hover:text-ink-primary"
                 }`}
               >
                 <Building className="w-3.5 h-3.5" />
@@ -195,115 +212,117 @@ export default function DossierPage() {
         {/* TAB 1: TENANT VAULT BUILDER */}
         {activeTab === "tenant_builder" && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            {/* Form Fields (8 Cols) */}
+            {/* Form Fields (7 Cols) */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="bg-white border-2 border-[#1F302B] rounded-2xl p-6 shadow-[4px_4px_0_#1F302B]">
-                <h3 className="text-lg font-serif font-bold text-stone-900 border-b border-stone-200 pb-3 mb-4 flex items-center justify-between">
-                  <span>Identity & Statutory Verification Fields</span>
-                  <span className="text-[11px] font-mono text-stone-500 font-normal">
+              <div className="bg-surface border border-hairline rounded-3xl p-6 sm:p-8 shadow-card">
+                <div className="flex items-center justify-between pb-4 mb-6 border-b border-hairline">
+                  <h3 className="text-lg font-display font-bold text-ink-primary">
+                    Identity & Statutory Verification Fields
+                  </h3>
+                  <span className="text-xs text-ink-tertiary">
                     Pre-fills DMP Form-2
                   </span>
-                </h3>
+                </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       Full Legal Name (as per NID)
                     </label>
                     <input
                       type="text"
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       National ID (NID / Smart Card)
                     </label>
                     <input
                       type="text"
                       value={formData.nationalIdNumber}
                       onChange={(e) => setFormData({ ...formData, nationalIdNumber: e.target.value })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-mono font-bold text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs font-sans text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-semibold"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       Date of Birth
                     </label>
                     <input
                       type="date"
                       value={formData.dateOfBirth}
                       onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       Father / Legal Guardian
                     </label>
                     <input
                       type="text"
                       value={formData.fatherOrGuardianName}
                       onChange={(e) => setFormData({ ...formData, fatherOrGuardianName: e.target.value })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       Present Residence in Dhaka
                     </label>
                     <input
                       type="text"
                       value={formData.presentAddressDhaka}
                       onChange={(e) => setFormData({ ...formData, presentAddressDhaka: e.target.value })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       Emergency Contact Phone
                     </label>
                     <input
                       type="text"
                       value={formData.emergencyContactPhone}
                       onChange={(e) => setFormData({ ...formData, emergencyContactPhone: e.target.value })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-mono text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       Emergency Relationship
                     </label>
                     <input
                       type="text"
                       value={formData.emergencyContactRelation}
                       onChange={(e) => setFormData({ ...formData, emergencyContactRelation: e.target.value })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
                 </div>
 
-                <h4 className="text-sm font-serif font-bold text-stone-900 border-b border-stone-200 pb-2 mt-6 mb-3">
+                <h4 className="text-sm font-display font-bold text-ink-primary border-b border-hairline pb-2.5 mt-8 mb-4">
                   Academic / Professional Verification & Prior Rental
                 </h4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       Occupation Category
                     </label>
                     <select
                       value={formData.occupation}
                       onChange={(e) => setFormData({ ...formData, occupation: e.target.value as any })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     >
                       <option value="student">Student (University / College)</option>
                       <option value="employed">Corporate Employee / Professional</option>
@@ -313,77 +332,77 @@ export default function DossierPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       Institution or Company Name
                     </label>
                     <input
                       type="text"
                       value={formData.institutionOrEmployer}
                       onChange={(e) => setFormData({ ...formData, institutionOrEmployer: e.target.value })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       Student ID or Employee Roll
                     </label>
                     <input
                       type="text"
                       value={formData.idCardNumberOrRoll}
                       onChange={(e) => setFormData({ ...formData, idCardNumberOrRoll: e.target.value })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-mono text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       Monthly Verified Income (BDT)
                     </label>
                     <input
                       type="number"
                       value={formData.monthlyIncomeBdt}
                       onChange={(e) => setFormData({ ...formData, monthlyIncomeBdt: Number(e.target.value) })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-mono font-bold text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs font-sans font-bold text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       Past Landlord Name (Reference)
                     </label>
                     <input
                       type="text"
                       value={formData.previousLandlordName || ""}
                       onChange={(e) => setFormData({ ...formData, previousLandlordName: e.target.value })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-stone-700 mb-1">
+                    <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                       Past Landlord Contact Phone
                     </label>
                     <input
                       type="text"
                       value={formData.previousLandlordPhone || ""}
                       onChange={(e) => setFormData({ ...formData, previousLandlordPhone: e.target.value })}
-                      className="w-full bg-[#FAF8F5] border border-stone-300 rounded-lg px-3 py-2 text-xs font-mono text-stone-900 focus:outline-none focus:ring-2 focus:ring-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs text-ink-primary focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all font-medium"
                     />
                   </div>
                 </div>
 
                 {/* Consent Checkbox */}
-                <div className="mt-4 p-3 rounded-xl bg-amber-50 border border-amber-200">
-                  <label className="flex items-start gap-2 cursor-pointer select-none">
+                <div className="mt-6 p-4 rounded-2xl bg-muted-sand/50 border border-hairline">
+                  <label className="flex items-start gap-2.5 cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={formData.policeCimsConsentGiven}
                       onChange={(e) => setFormData({ ...formData, policeCimsConsentGiven: e.target.checked })}
-                      className="mt-0.5 rounded text-[#1F302B] focus:ring-[#1F302B]"
+                      className="mt-0.5 rounded border-hairline text-forest focus:ring-forest"
                     />
-                    <span className="text-xs text-stone-800 leading-tight">
-                      <strong>Statutory Police CIMS Consent:</strong> I authorize RentPulse to compile this verified profile into standard Dhaka Metropolitan Police Form-2 upon final lease agreement signing.
+                    <span className="text-xs text-ink-secondary leading-relaxed">
+                      <strong className="text-ink-primary">Statutory Police CIMS Consent:</strong> I authorize RentPulse to compile this verified profile into standard Dhaka Metropolitan Police Form-2 upon final lease agreement signing.
                     </span>
                   </label>
                 </div>
@@ -392,27 +411,27 @@ export default function DossierPage() {
 
             {/* Cryptographic Vault Locking Panel (5 Cols) */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="bg-white border-2 border-[#1F302B] rounded-2xl p-6 shadow-[4px_4px_0_#1F302B]">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-2 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-300">
-                    <KeyRound className="w-4 h-4" />
+              <div className="bg-surface border border-hairline rounded-3xl p-6 sm:p-8 shadow-card">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2.5 rounded-2xl bg-forest-light text-forest">
+                    <KeyRound className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-serif font-bold text-stone-900 text-base">
+                    <h3 className="font-display font-bold text-ink-primary text-base">
                       Cryptographic Vault Key
                     </h3>
-                    <p className="text-[11px] text-stone-500">
-                      Your master decryption passphrase
+                    <p className="text-xs text-ink-secondary">
+                      Master client decryption passphrase
                     </p>
                   </div>
                 </div>
 
-                <p className="text-xs text-stone-600 mb-4 leading-relaxed">
-                  RentPulse does not store your passphrase. It is used in-memory by the Web Crypto API to derive a 256-bit AES-GCM symmetric key with 100,000 PBKDF2 iterations.
+                <p className="text-xs text-ink-secondary mb-5 leading-relaxed">
+                  RentPulse does not store your passphrase on any server. It is derived in-memory by the Web Crypto API to produce a 256-bit AES-GCM symmetric key with 100,000 PBKDF2 iterations.
                 </p>
 
-                <div className="mb-4">
-                  <label className="block text-xs font-bold text-stone-700 mb-1">
+                <div className="mb-5">
+                  <label className="block text-xs font-semibold text-ink-primary mb-1.5">
                     Set Vault Passphrase:
                   </label>
                   <div className="relative">
@@ -420,93 +439,94 @@ export default function DossierPage() {
                       type={showPassphrase ? "text" : "password"}
                       value={passphrase}
                       onChange={(e) => setPassphrase(e.target.value)}
-                      className="w-full bg-[#FAF8F5] border-2 border-stone-300 rounded-xl px-3 py-2.5 text-xs font-mono font-bold text-stone-900 pr-10 focus:outline-none focus:border-[#1F302B]"
+                      className="w-full bg-muted-sand/40 border border-hairline rounded-xl px-4 py-2.5 text-xs font-sans font-bold text-ink-primary pr-10 focus:outline-none focus:border-forest/50 focus:bg-surface focus:ring-2 focus:ring-forest/10 transition-all"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassphrase(!showPassphrase)}
-                      className="absolute right-3 top-2.5 text-stone-400 hover:text-stone-700"
+                      className="absolute right-3.5 top-2.5 text-ink-tertiary hover:text-ink-primary"
                     >
                       {showPassphrase ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
-                  <div className="flex items-center gap-1.5 mt-1.5 text-[10px] text-emerald-700 font-semibold font-mono">
+                  <div className="flex items-center gap-1.5 mt-2 text-[10px] text-forest font-semibold">
                     <ShieldCheck className="w-3.5 h-3.5" />
                     <span>AES-GCM-256 • PBKDF2-SHA256 • 100K ITERATIONS</span>
                   </div>
                 </div>
 
-                <button
-                  type="button"
+                <EditorialButton
+                  variant="primary"
+                  size="md"
+                  className="w-full"
                   onClick={handleLockAndEncrypt}
                   disabled={isEncrypting}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold text-white bg-[#1F302B] hover:bg-[#2C4A3E] border border-[#1F302B] shadow-[2px_2px_0_#BD5338] transition-all"
                 >
-                  <Lock className="w-4 h-4 text-amber-300" />
+                  <Lock className="w-4 h-4" />
                   <span>{isEncrypting ? "Encrypting in Web Crypto..." : "Lock & Encrypt Dossier Vault"}</span>
-                </button>
+                </EditorialButton>
               </div>
 
               {/* Encrypted Envelope Display */}
               {vaultEnvelope && (
-                <div className="bg-[#FAF8F5] border-2 border-emerald-700 rounded-2xl p-5 shadow-[4px_4px_0_#1F302B] animate-fade-in">
-                  <div className="flex items-center justify-between pb-3 border-b border-emerald-200 mb-3">
-                    <div className="flex items-center gap-2 text-emerald-900 font-bold text-xs">
-                      <ShieldCheck className="w-4 h-4 text-emerald-700" />
+                <div className="bg-forest-light/60 border border-forest/20 rounded-3xl p-6 sm:p-7 shadow-card animate-fade-in">
+                  <div className="flex items-center justify-between pb-4 border-b border-forest/15 mb-4">
+                    <div className="flex items-center gap-2 text-forest font-bold text-xs">
+                      <ShieldCheck className="w-4 h-4" />
                       <span>Encrypted Envelope Generated</span>
                     </div>
-                    <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-200 text-emerald-900 rounded font-bold">
+                    <GlassBadge variant="forest">
                       VAULT LOCKED
-                    </span>
+                    </GlassBadge>
                   </div>
 
-                  <div className="space-y-3 text-xs">
+                  <div className="space-y-3.5 text-xs">
                     <div>
-                      <div className="text-[10px] font-mono text-stone-500 uppercase">
+                      <div className="text-[10px] text-ink-tertiary uppercase font-medium">
                         Dossier Reference ID:
                       </div>
-                      <div className="font-mono font-bold text-stone-900">
+                      <div className="font-sans font-bold text-ink-primary mt-0.5">
                         {vaultEnvelope.dossierId}
                       </div>
                     </div>
 
                     <div>
-                      <div className="flex items-center justify-between text-[10px] font-mono text-stone-500 uppercase">
+                      <div className="flex items-center justify-between text-[10px] text-ink-tertiary uppercase font-medium">
                         <span>SHA-256 Digest (Integrity Hash):</span>
                         <button
                           onClick={() => copyToClipboard(vaultEnvelope.dossierHash)}
-                          className="text-stone-700 hover:text-stone-900 flex items-center gap-1 font-bold"
+                          className="text-forest hover:text-forest-hover flex items-center gap-1 font-semibold"
                         >
-                          {copiedHash ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
+                          {copiedHash ? <Check className="w-3 h-3 text-forest" /> : <Copy className="w-3 h-3" />}
                           {copiedHash ? "Copied" : "Copy"}
                         </button>
                       </div>
-                      <div className="font-mono text-[11px] bg-white p-2 rounded border border-stone-200 break-all text-emerald-900 font-medium">
+                      <div className="font-mono text-[11px] bg-surface p-2.5 rounded-xl border border-forest/15 break-all text-forest font-medium mt-1">
                         {vaultEnvelope.dossierHash}
                       </div>
                     </div>
 
                     <div>
-                      <div className="text-[10px] font-mono text-stone-500 uppercase">
+                      <div className="text-[10px] text-ink-tertiary uppercase font-medium">
                         AES-256 Ciphertext Payload (Preview):
                       </div>
-                      <div className="font-mono text-[10px] bg-stone-900 text-amber-200 p-2 rounded overflow-hidden truncate">
-                        {vaultEnvelope.ciphertextBase64.slice(0, 48)}... [Encrypted Payload]
+                      <div className="font-mono text-[10px] bg-ink-primary text-canvas/90 p-2.5 rounded-xl overflow-hidden truncate mt-1">
+                        {vaultEnvelope.ciphertextBase64.slice(0, 48)}... [Encrypted Buffer]
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-stone-200 flex items-center justify-between text-[11px]">
-                      <span className="text-stone-500">Police CIMS Export:</span>
-                      <span className="font-bold text-emerald-800">
+                    <div className="pt-3 border-t border-forest/15 flex items-center justify-between text-xs">
+                      <span className="text-ink-secondary">Police CIMS Export:</span>
+                      <span className="font-semibold text-forest">
                         {vaultEnvelope.policeCimsReady ? "✓ Form-2 Compatible" : "Pending Consent"}
                       </span>
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-stone-200">
+                  <div className="mt-5 pt-4 border-t border-forest/15">
                     <button
                       onClick={() => setActiveTab("landlord_inspector")}
-                      className="w-full py-2 text-center text-xs font-bold text-[#BD5338] hover:underline"
+                      className="w-full text-center text-xs font-semibold text-forest hover:text-forest-hover transition-colors"
                     >
                       Test Landlord Review Portal with this Vault →
                     </button>
@@ -520,39 +540,42 @@ export default function DossierPage() {
         {/* TAB 2: LANDLORD INSPECTION & DECRYPTION PORTAL */}
         {activeTab === "landlord_inspector" && (
           <div className="max-w-4xl mx-auto space-y-6">
-            <div className="bg-white border-2 border-[#1F302B] rounded-2xl p-6 sm:p-8 shadow-[4px_4px_0_#1F302B]">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2.5 rounded-xl bg-orange-100 text-[#BD5338] border border-orange-300">
-                  <Building className="w-5 h-5" />
+            <div className="bg-surface border border-hairline rounded-3xl p-8 sm:p-10 shadow-card">
+              <div className="flex items-start gap-4 mb-6">
+                <div className="p-3 rounded-2xl bg-terracotta-light text-terracotta shrink-0">
+                  <Building className="w-6 h-6" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-serif font-bold text-stone-900">
+                  <h2 className="text-2xl font-display font-bold text-ink-primary">
                     Lessor / Landlord Tenancy Dossier Review Portal
                   </h2>
-                  <p className="text-xs text-stone-600 mt-0.5">
+                  <p className="text-xs text-ink-secondary mt-1 leading-relaxed">
                     Enter the prospective tenant's time-limited access passphrase to decrypt and inspect audited credentials.
                   </p>
                 </div>
               </div>
 
               {!vaultEnvelope ? (
-                <div className="p-6 rounded-xl bg-amber-50 border border-amber-200 text-center">
-                  <BadgeAlert className="w-8 h-8 text-amber-600 mx-auto mb-2" />
-                  <p className="text-sm font-bold text-stone-800">No Encrypted Dossier in Active Session</p>
-                  <p className="text-xs text-stone-600 mt-1">Please switch to Tab 1 (Tenant Vault Builder) and click "Lock & Encrypt Dossier Vault" first.</p>
-                  <button
-                    onClick={() => setActiveTab("tenant_builder")}
-                    className="mt-3 px-4 py-1.5 bg-[#1F302B] text-white text-xs font-bold rounded-lg"
-                  >
-                    Go to Tenant Builder
-                  </button>
+                <div className="p-8 rounded-2xl bg-muted-sand/50 border border-hairline text-center">
+                  <BadgeAlert className="w-8 h-8 text-terracotta mx-auto mb-2" />
+                  <p className="text-sm font-display font-bold text-ink-primary">No Encrypted Dossier in Active Session</p>
+                  <p className="text-xs text-ink-secondary mt-1">Please switch to Tab 1 (Tenant Vault Builder) and click "Lock & Encrypt Dossier Vault" first.</p>
+                  <div className="mt-4">
+                    <EditorialButton
+                      variant="primary"
+                      size="sm"
+                      onClick={() => setActiveTab("tenant_builder")}
+                    >
+                      Go to Tenant Builder
+                    </EditorialButton>
+                  </div>
                 </div>
               ) : (
                 <div>
                   {/* Key Entry Bar */}
-                  <div className="flex flex-col sm:flex-row items-center gap-3 p-4 bg-[#FAF8F5] rounded-xl border border-stone-300 mb-6">
+                  <div className="flex flex-col sm:flex-row items-center gap-3 p-5 bg-muted-sand/40 rounded-2xl border border-hairline mb-6">
                     <div className="flex-1 w-full">
-                      <label className="block text-[10px] font-mono font-bold text-stone-500 uppercase mb-1">
+                      <label className="block text-[11px] font-semibold text-ink-secondary uppercase tracking-wider mb-1.5">
                         Enter Tenant Decryption Token / Key:
                       </label>
                       <input
@@ -560,23 +583,25 @@ export default function DossierPage() {
                         value={inspectKey}
                         onChange={(e) => setInspectKey(e.target.value)}
                         placeholder="Enter passphrase..."
-                        className="w-full bg-white border border-stone-300 rounded-lg px-3 py-2 text-xs font-mono font-bold text-stone-900 focus:outline-none focus:border-[#1F302B]"
+                        className="w-full bg-surface border border-hairline rounded-xl px-4 py-2.5 text-xs font-sans font-bold text-ink-primary focus:outline-none focus:border-forest/50 focus:ring-2 focus:ring-forest/10 transition-all"
                       />
                     </div>
-                    <button
-                      type="button"
-                      onClick={handleDecryptInspection}
-                      disabled={isDecrypting}
-                      className="w-full sm:w-auto self-end flex items-center justify-center gap-1.5 px-6 py-2.5 rounded-lg text-xs font-bold text-white bg-[#BD5338] hover:bg-[#a6452d] shadow-[2px_2px_0_#1F302B] transition-all"
-                    >
-                      <Unlock className="w-3.5 h-3.5 text-amber-200" />
-                      <span>{isDecrypting ? "Verifying Hash..." : "Decrypt & Inspect"}</span>
-                    </button>
+                    <div className="w-full sm:w-auto self-end">
+                      <EditorialButton
+                        variant="primary"
+                        size="md"
+                        onClick={handleDecryptInspection}
+                        disabled={isDecrypting}
+                      >
+                        <Unlock className="w-3.5 h-3.5" />
+                        <span>{isDecrypting ? "Verifying Hash..." : "Decrypt & Inspect"}</span>
+                      </EditorialButton>
+                    </div>
                   </div>
 
                   {decryptError && (
-                    <div className="p-4 rounded-xl bg-red-50 border border-red-300 text-red-900 text-xs mb-6 flex items-start gap-2">
-                      <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                    <div className="p-4 rounded-2xl bg-terracotta-light border border-terracotta/20 text-terracotta text-xs mb-6 flex items-start gap-2.5">
+                      <AlertCircle className="w-4 h-4 text-terracotta shrink-0 mt-0.5" />
                       <div>
                         <strong>Verification Error:</strong> {decryptError}
                       </div>
@@ -585,19 +610,19 @@ export default function DossierPage() {
 
                   {/* Decrypted Verified Dossier View */}
                   {decryptedResult && (
-                    <div className="bg-[#FAF8F5] border-2 border-emerald-700 rounded-2xl p-6 shadow-[3px_3px_0_#1F302B] animate-fade-in">
-                      <div className="flex flex-wrap items-center justify-between pb-4 border-b border-stone-300 mb-4 gap-2">
+                    <div className="bg-forest-light/40 border border-forest/20 rounded-3xl p-6 sm:p-8 shadow-card animate-fade-in">
+                      <div className="flex flex-wrap items-center justify-between pb-4 border-b border-forest/15 mb-5 gap-3">
                         <div>
-                          <span className="text-[10px] font-mono uppercase px-2 py-0.5 bg-emerald-100 text-emerald-900 border border-emerald-300 rounded font-bold">
-                            ✓ CRYPTOGRAPHICALLY AUDITED & VERIFIED
-                          </span>
-                          <h3 className="text-xl font-serif font-bold text-stone-900 mt-1">
+                          <GlassBadge variant="forest">
+                            ✓ Cryptographically Audited & Verified
+                          </GlassBadge>
+                          <h3 className="text-2xl font-display font-bold text-ink-primary mt-2">
                             {decryptedResult.fullName}
                           </h3>
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <span className="px-3 py-1 bg-white border border-stone-300 rounded-md text-xs font-mono font-bold text-emerald-800">
+                          <span className="px-3.5 py-1.5 bg-surface border border-forest/15 rounded-full text-xs font-sans font-bold text-forest shadow-sm">
                             NID: {decryptedResult.nationalIdNumber}
                           </span>
                         </div>
@@ -605,58 +630,58 @@ export default function DossierPage() {
 
                       {/* Detail Breakdown */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs mb-6">
-                        <div className="p-3 bg-white rounded-xl border border-stone-200">
-                          <span className="text-[10px] font-mono text-stone-500 uppercase block">Institution / Employer:</span>
-                          <span className="font-bold text-stone-900">{decryptedResult.institutionOrEmployer}</span>
-                          <span className="text-[10px] text-stone-500 block mt-0.5">ID: {decryptedResult.idCardNumberOrRoll}</span>
+                        <div className="p-4 bg-surface rounded-2xl border border-hairline shadow-subtle">
+                          <span className="text-[10px] text-ink-tertiary uppercase font-medium block">Institution / Employer:</span>
+                          <span className="font-bold text-ink-primary mt-1 block">{decryptedResult.institutionOrEmployer}</span>
+                          <span className="text-[10px] text-ink-secondary block mt-0.5">ID: {decryptedResult.idCardNumberOrRoll}</span>
                         </div>
 
-                        <div className="p-3 bg-white rounded-xl border border-stone-200">
-                          <span className="text-[10px] font-mono text-stone-500 uppercase block">Verified Income:</span>
-                          <span className="font-bold text-stone-900">৳{decryptedResult.monthlyIncomeBdt.toLocaleString()}</span>
-                          <span className="text-[10px] text-emerald-700 block mt-0.5">✓ Bank Statement Verified</span>
+                        <div className="p-4 bg-surface rounded-2xl border border-hairline shadow-subtle">
+                          <span className="text-[10px] text-ink-tertiary uppercase font-medium block">Verified Income:</span>
+                          <span className="font-bold text-ink-primary mt-1 block">৳{decryptedResult.monthlyIncomeBdt.toLocaleString()}</span>
+                          <span className="text-[10px] text-forest block mt-0.5">✓ Bank Statement Verified</span>
                         </div>
 
-                        <div className="p-3 bg-white rounded-xl border border-stone-200">
-                          <span className="text-[10px] font-mono text-stone-500 uppercase block">Police CIMS Compliance:</span>
-                          <span className="font-bold text-emerald-800">✓ Form-2 Export Ready</span>
-                          <span className="text-[10px] text-stone-500 block mt-0.5">DMP Station: Banani / Gulshan</span>
+                        <div className="p-4 bg-surface rounded-2xl border border-hairline shadow-subtle">
+                          <span className="text-[10px] text-ink-tertiary uppercase font-medium block">Police CIMS Compliance:</span>
+                          <span className="font-bold text-forest mt-1 block">✓ Form-2 Export Ready</span>
+                          <span className="text-[10px] text-ink-secondary block mt-0.5">DMP Station: Banani / Gulshan</span>
                         </div>
 
-                        <div className="p-3 bg-white rounded-xl border border-stone-200">
-                          <span className="text-[10px] font-mono text-stone-500 uppercase block">Past Landlord Reference:</span>
-                          <span className="font-bold text-stone-900">{decryptedResult.previousLandlordName || "None"}</span>
-                          <span className="text-[10px] font-mono text-stone-500 block mt-0.5">{decryptedResult.previousLandlordPhone || "N/A"}</span>
+                        <div className="p-4 bg-surface rounded-2xl border border-hairline shadow-subtle">
+                          <span className="text-[10px] text-ink-tertiary uppercase font-medium block">Past Landlord Reference:</span>
+                          <span className="font-bold text-ink-primary mt-1 block">{decryptedResult.previousLandlordName || "None"}</span>
+                          <span className="text-[10px] text-ink-secondary block mt-0.5">{decryptedResult.previousLandlordPhone || "N/A"}</span>
                         </div>
 
-                        <div className="p-3 bg-white rounded-xl border border-stone-200">
-                          <span className="text-[10px] font-mono text-stone-500 uppercase block">Emergency Contact:</span>
-                          <span className="font-bold text-stone-900">{decryptedResult.emergencyContactPhone}</span>
-                          <span className="text-[10px] text-stone-500 block mt-0.5">({decryptedResult.emergencyContactRelation})</span>
+                        <div className="p-4 bg-surface rounded-2xl border border-hairline shadow-subtle">
+                          <span className="text-[10px] text-ink-tertiary uppercase font-medium block">Emergency Contact:</span>
+                          <span className="font-bold text-ink-primary mt-1 block">{decryptedResult.emergencyContactPhone}</span>
+                          <span className="text-[10px] text-ink-secondary block mt-0.5">({decryptedResult.emergencyContactRelation})</span>
                         </div>
 
-                        <div className="p-3 bg-white rounded-xl border border-stone-200">
-                          <span className="text-[10px] font-mono text-stone-500 uppercase block">Father / Guardian:</span>
-                          <span className="font-bold text-stone-900">{decryptedResult.fatherOrGuardianName}</span>
-                          <span className="text-[10px] text-stone-500 block mt-0.5">Permanent: {decryptedResult.permanentAddressDistrict}</span>
+                        <div className="p-4 bg-surface rounded-2xl border border-hairline shadow-subtle">
+                          <span className="text-[10px] text-ink-tertiary uppercase font-medium block">Father / Guardian:</span>
+                          <span className="font-bold text-ink-primary mt-1 block">{decryptedResult.fatherOrGuardianName}</span>
+                          <span className="text-[10px] text-ink-secondary block mt-0.5">Permanent: {decryptedResult.permanentAddressDistrict}</span>
                         </div>
                       </div>
 
                       {/* Approval Actions */}
-                      <div className="flex flex-wrap items-center justify-between pt-4 border-t border-stone-300 gap-3">
-                        <div className="flex items-center gap-2 text-xs text-stone-600 font-mono">
-                          <FileCheck2 className="w-4 h-4 text-emerald-700" />
-                          <span>Dossier Hash Match: {vaultEnvelope.dossierHash.slice(0, 16)}...</span>
+                      <div className="flex flex-wrap items-center justify-between pt-5 border-t border-forest/15 gap-4">
+                        <div className="flex items-center gap-2 text-xs text-ink-secondary">
+                          <FileCheck2 className="w-4 h-4 text-forest" />
+                          <span>Dossier Integrity Match: {vaultEnvelope.dossierHash.slice(0, 16)}...</span>
                         </div>
 
-                        <div className="flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => alert("Applicant Tenancy Dossier Approved! Moving to Phase 5 Viewing Scheduling.")}
-                            className="px-4 py-2 bg-emerald-800 text-white text-xs font-bold rounded-xl shadow-[2px_2px_0_#1F302B]"
+                        <div>
+                          <EditorialButton
+                            variant="primary"
+                            size="md"
+                            onClick={() => alert("Applicant Tenancy Dossier Approved! Moving to Viewing Scheduling.")}
                           >
-                            ✓ Approve Tenant for Viewing
-                          </button>
+                            <span>✓ Approve Tenant for Viewing</span>
+                          </EditorialButton>
                         </div>
                       </div>
                     </div>
@@ -669,9 +694,9 @@ export default function DossierPage() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-auto border-t-2 border-[#1F302B] bg-white py-6">
-        <div className="max-w-7xl mx-auto px-4 text-center text-xs text-stone-500 font-mono">
-          RentPulse Phase 4 // Tenancy Dossier Vault • AES-GCM 256-Bit Cryptography & SHA-256 Tamper Protection
+      <footer className="mt-auto border-t border-hairline bg-surface py-8">
+        <div className="max-w-[1720px] mx-auto px-6 text-center text-xs text-ink-tertiary">
+          RentPulse // Tenancy Dossier Vault • AES-GCM 256-Bit Cryptography & SHA-256 Tamper Protection
         </div>
       </footer>
     </div>
