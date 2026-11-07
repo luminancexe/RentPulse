@@ -12,6 +12,7 @@ import {
   Receipt,
   Users,
   Compass,
+  CalendarCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { GlassBadge } from "@/components/ui/GlassBadge";
@@ -23,6 +24,7 @@ interface PropertyCardProps {
   listing: PropertyListingItem;
   onOpenCostBreakdown?: (listing: PropertyListingItem) => void;
   onSelectProperty?: (listing: PropertyListingItem) => void;
+  onScheduleViewing?: (listing: PropertyListingItem) => void;
   isShortlisted?: boolean;
   onToggleShortlist?: (listingId: string) => void;
   className?: string;
@@ -32,6 +34,7 @@ export function PropertyCard({
   listing,
   onOpenCostBreakdown,
   onSelectProperty,
+  onScheduleViewing,
   isShortlisted = false,
   onToggleShortlist,
   className,
@@ -183,18 +186,34 @@ export function PropertyCard({
             </div>
           </div>
 
-          <EditorialButton
-            variant="outline"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              onOpenCostBreakdown?.(listing);
-            }}
-            className="flex items-center gap-1.5 py-1.5 px-3 text-xs font-sans hover:border-forest/40"
-          >
-            <Receipt className="w-3.5 h-3.5 text-forest" />
-            <span>Breakdown</span>
-          </EditorialButton>
+          <div className="flex items-center gap-2">
+            <EditorialButton
+              variant="outline"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpenCostBreakdown?.(listing);
+              }}
+              className="flex items-center gap-1.5 py-1.5 px-3 text-xs font-sans hover:border-forest/40"
+            >
+              <Receipt className="w-3.5 h-3.5 text-forest" />
+              <span>Breakdown</span>
+            </EditorialButton>
+            {onScheduleViewing && (
+              <EditorialButton
+                variant="primary"
+                size="sm"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onScheduleViewing(listing);
+                }}
+                className="flex items-center gap-1.5 py-1.5 px-3 text-xs font-sans"
+              >
+                <CalendarCheck className="w-3.5 h-3.5" />
+                <span>Visit</span>
+              </EditorialButton>
+            )}
+          </div>
         </div>
       </div>
     </article>
