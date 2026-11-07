@@ -12,6 +12,7 @@ import {
 } from "@/lib/deed-verifier";
 import { GlassBadge } from "@/components/ui/GlassBadge";
 import { EditorialButton } from "@/components/ui/EditorialButton";
+import { EcosystemNavMenu } from "@/components/navigation";
 import {
   ShieldCheck,
   FileText,
@@ -27,6 +28,10 @@ import {
   Hash,
   ChevronLeft,
   X,
+  CalendarCheck,
+  Scale,
+  FileCheck2,
+  CreditCard,
 } from "lucide-react";
 
 export default function LandlordVerifyPage() {
@@ -164,39 +169,8 @@ export default function LandlordVerifyPage() {
             </Link>
           </div>
 
-          {/* Central Subsystem Navigation Pill Links */}
-          <nav className="hidden md:flex items-center gap-1.5 p-1 rounded-full bg-muted-sand/70 border border-hairline shadow-subtle">
-            <Link
-              href="/properties"
-              className="px-4 py-2 rounded-full text-xs font-medium text-ink-secondary hover:text-ink-primary transition-colors flex items-center gap-1.5"
-            >
-              <Home className="w-3.5 h-3.5" />
-              <span>Discovery Feed</span>
-            </Link>
-            <Link
-              href="/roommates"
-              className="px-4 py-2 rounded-full text-xs font-medium text-ink-secondary hover:text-ink-primary transition-colors flex items-center gap-1.5"
-            >
-              <Users className="w-3.5 h-3.5" />
-              <span>Roommate Synergy</span>
-            </Link>
-            <Link
-              href="/dossier"
-              className="px-4 py-2 rounded-full text-xs font-medium text-ink-secondary hover:text-ink-primary transition-colors flex items-center gap-1.5"
-            >
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Tenancy Dossier</span>
-            </Link>
-            <Link
-              href="/landlord/verify"
-              className="px-4 py-2 rounded-full text-xs font-semibold bg-surface text-ink-primary shadow-subtle border border-hairline flex items-center gap-1.5"
-            >
-              <FileText className="w-3.5 h-3.5 text-forest" />
-              <span>Deed Anti-Fraud</span>
-            </Link>
-          </nav>
-
           <div className="flex items-center gap-3 shrink-0">
+            <EcosystemNavMenu currentPath="/landlord/verify" />
             <GlassBadge variant="forest">
               Anti-Fraud Gate
             </GlassBadge>

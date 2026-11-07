@@ -12,6 +12,9 @@ import {
   CheckCircle2,
   CalendarCheck,
   ChevronLeft,
+  Scale,
+  CreditCard,
+  FileCheck2,
 } from "lucide-react";
 import { SegmentedControl, SegmentOption } from "@/components/ui/SegmentedControl";
 import { EditorialButton } from "@/components/ui/EditorialButton";
@@ -25,6 +28,12 @@ import {
   PropertyListingItem,
 } from "@/components/listings";
 import { MOCK_PROPERTIES } from "@/lib/property-data";
+import { EcosystemNavMenu } from "@/components/navigation";
+import { ViewingCalendarModal } from "@/components/viewing";
+import {
+  ViewingAppointment,
+  INITIAL_VIEWING_APPOINTMENTS,
+} from "@/lib/viewing-calendar";
 
 type ModeType = "entire_apartment" | "shared_room";
 type ViewLayout = "grid" | "split_map";
@@ -33,6 +42,8 @@ export default function PropertiesDiscoveryPage() {
   const [activeMode, setActiveMode] = useState<ModeType>("entire_apartment");
   const [viewLayout, setViewLayout] = useState<ViewLayout>("grid");
   const [activeBreakdownProperty, setActiveBreakdownProperty] = useState<PropertyListingItem | null>(null);
+  const [activeViewingProperty, setActiveViewingProperty] = useState<PropertyListingItem | null>(null);
+  const [viewingAppointments, setViewingAppointments] = useState<ViewingAppointment[]>(INITIAL_VIEWING_APPOINTMENTS);
   const [selectedMapProperty, setSelectedMapProperty] = useState<PropertyListingItem | null>(null);
   const [bookingToast, setBookingToast] = useState<string | null>(null);
 
@@ -99,7 +110,12 @@ export default function PropertiesDiscoveryPage() {
   }, [activeMode, filters]);
 
   const handleScheduleViewing = (prop: PropertyListingItem) => {
-    setBookingToast(`Viewing request registered for ${prop.title}! Landlord SMS alert dispatched.`);
+    setActiveViewingProperty(prop);
+  };
+
+  const handleAppointmentBooked = (appointment: ViewingAppointment) => {
+    setViewingAppointments((prev) => [appointment, ...prev]);
+    setBookingToast(`Viewing confirmed for ${appointment.propertyTitle}! Reference: ${appointment.bookingRef}`);
     setTimeout(() => setBookingToast(null), 5000);
   };
 
@@ -150,30 +166,10 @@ export default function PropertiesDiscoveryPage() {
             />
           </div>
 
-          {/* View Mode Toggle (Grid vs Split Map) */}
+          {/* View Mode Toggle (Grid vs Split Map) & Ecosystem Dropdown */}
           <div className="flex items-center gap-3 shrink-0">
-            {/* Ecosystem Navigation Links */}
-            <div className="hidden xl:flex items-center gap-2">
-              <Link
-                href="/roommates"
-                className="px-3 py-1.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-900 border border-emerald-300 hover:bg-emerald-100 flex items-center gap-1 transition-colors"
-              >
-                <Users className="w-3.5 h-3.5 text-emerald-700" />
-                <span>Roommate Synergy</span>
-              </Link>
-              <Link
-                href="/dossier"
-                className="px-3 py-1.5 rounded-full text-xs font-semibold bg-stone-100 text-stone-800 border border-stone-300 hover:bg-stone-200 flex items-center gap-1 transition-colors"
-              >
-                <span>Dossier</span>
-              </Link>
-              <Link
-                href="/landlord/verify"
-                className="px-3 py-1.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-300 hover:bg-amber-100 flex items-center gap-1 transition-colors"
-              >
-                <span>Deed Verify</span>
-              </Link>
-            </div>
+            {/* Ecosystem Navigation Dropdown */}
+            <EcosystemNavMenu currentPath="/properties" />
 
             <div className="inline-flex p-1 rounded-full bg-muted-sand/70 border border-hairline shadow-subtle">
               <button
@@ -295,6 +291,7 @@ export default function PropertiesDiscoveryPage() {
                 listing={prop}
                 onOpenCostBreakdown={(p) => setActiveBreakdownProperty(p)}
                 onSelectProperty={(p) => setActiveBreakdownProperty(p)}
+                onScheduleViewing={(p) => setActiveViewingProperty(p)}
               />
             ))}
           </div>
@@ -316,6 +313,7 @@ export default function PropertiesDiscoveryPage() {
                     listing={prop}
                     onOpenCostBreakdown={(p) => setActiveBreakdownProperty(p)}
                     onSelectProperty={(p) => setSelectedMapProperty(p)}
+                    onScheduleViewing={(p) => setActiveViewingProperty(p)}
                   />
                 </div>
               ))}
@@ -340,6 +338,15 @@ export default function PropertiesDiscoveryPage() {
         isOpen={Boolean(activeBreakdownProperty)}
         onClose={() => setActiveBreakdownProperty(null)}
         onScheduleViewing={handleScheduleViewing}
+      />
+
+      {/* Anti-Collision Viewing Calendar Modal */}
+      <ViewingCalendarModal
+        property={activeViewingProperty}
+        isOpen={Boolean(activeViewingProperty)}
+        onClose={() => setActiveViewingProperty(null)}
+        existingAppointments={viewingAppointments}
+        onAppointmentBooked={handleAppointmentBooked}
       />
     </div>
   );
