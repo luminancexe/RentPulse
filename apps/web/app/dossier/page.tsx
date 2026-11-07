@@ -399,7 +399,7 @@ export default function DossierPage() {
                       type="checkbox"
                       checked={formData.policeCimsConsentGiven}
                       onChange={(e) => setFormData({ ...formData, policeCimsConsentGiven: e.target.checked })}
-                      className="mt-0.5 rounded border-hairline text-forest focus:ring-forest"
+                      className="mt-0.5 rounded border border-hairline text-forest focus:ring-forest"
                     />
                     <span className="text-xs text-ink-secondary leading-relaxed">
                       <strong className="text-ink-primary">Statutory Police CIMS Consent:</strong> I authorize RentPulse to compile this verified profile into standard Dhaka Metropolitan Police Form-2 upon final lease agreement signing.

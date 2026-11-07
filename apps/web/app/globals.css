@@ -64,18 +64,7 @@
     font-weight: 700;
   }
 
-  /* Delicate 1px Hairline Border */
-  .border-hairline {
-    border: 1px solid rgba(28, 26, 23, 0.08);
-  }
 
-  .border-hairline-b {
-    border-bottom: 1px solid rgba(28, 26, 23, 0.08);
-  }
-
-  .border-hairline-t {
-    border-top: 1px solid rgba(28, 26, 23, 0.08);
-  }
 
   /* Frosted Glassmorphic Badge */
   .glass-badge {

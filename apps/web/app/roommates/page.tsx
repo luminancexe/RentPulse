@@ -271,7 +271,7 @@ export default function RoommatesPage() {
                 type="checkbox"
                 checked={smokeFreeOnly}
                 onChange={(e) => setSmokeFreeOnly(e.target.checked)}
-                className="rounded border-hairline text-forest focus:ring-forest"
+                className="rounded border border-hairline text-forest focus:ring-forest"
               />
               <span className="text-ink-primary">100% Smoke-Free</span>
             </label>
